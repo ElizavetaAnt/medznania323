@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>МедЗнания — Правовой тренажёр | Антошина Елизавета</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080d18;--bg2:#0f1626;--card:#131d30;--card2:#192035;
+  --gold:#c9a227;--gold2:#e8bb3a;--gold3:rgba(201,162,39,0.12);
+  --text:#e8edf5;--muted:#5a6a8a;--muted2:#8294b2;
+  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--purple:#8b5cf6;--orange:#f97316;
+  --border:rgba(255,255,255,0.07);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+h1,h2,h3,h4{font-family:'Montserrat',sans-serif;font-weight:600}
+.screen{display:none}.screen.active{display:block}
+
+/* ── HEADER ── */
+.header{display:flex;justify-content:space-between;align-items:center;padding:16px 40px;border-bottom:1px solid rgba(201,162,39,0.15);position:sticky;top:0;background:var(--bg);z-index:100;gap:16px}
+.logo{display:flex;align-items:center;gap:0;text-decoration:none;flex-shrink:0}
+.logo-part{font-family:'Inter',sans-serif;font-size:20px;font-weight:600;letter-spacing:1px;color:var(--text);line-height:1}
+.logo-dot{font-weight:300;color:var(--muted2);font-size:18px}
+.fox-svg{height:42px;width:auto;margin:0 6px}
+.gate-logo{display:flex;align-items:center;justify-content:center}
+.logo-med{font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:4px;color:#2dd4bf;margin-left:14px;align-self:center}
+.header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.header-label{font-size:11px;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+
+/* ── LANDING ── */
+.land{max-width:780px;margin:0 auto;padding:60px 24px 80px}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:2px;padding:7px 16px;border-radius:30px;margin-bottom:32px}
+.land h1{font-size:clamp(34px,6vw,56px);font-weight:900;line-height:1.1;margin-bottom:16px}
+.land h1 span{color:var(--gold)}
+.land .sub{font-size:16px;color:var(--muted2);line-height:1.7;margin-bottom:40px;max-width:600px}
+.author-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-bottom:32px}
+.av{width:50px;height:50px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#000;flex-shrink:0}
+.av-name{font-weight:700;font-size:15px;margin-bottom:3px}
+.av-role{font-size:12px;color:var(--muted)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center}
+.stat-n{font-size:28px;font-weight:900;color:var(--gold)}
+.stat-l{font-size:10px;letter-spacing:1.5px;color:var(--muted);margin-top:4px}
+
+/* ── ROLES ── */
+.roles-section{margin-bottom:36px}
+.roles-section h2{font-size:14px;font-weight:700;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.role-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;text-align:left}
+.role-card:hover{border-color:var(--gold);background:var(--gold3)}
+.role-card.selected{border-color:var(--gold);background:var(--gold3)}
+.role-icon{font-size:24px;margin-bottom:10px}
+.role-name{font-weight:700;font-size:15px;margin-bottom:4px}
+.role-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* LEVELS INFO */
+.levels-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:32px}
+.lv{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center}
+.lv-stars{font-size:13px;color:var(--gold);margin-bottom:6px}
+.lv-name{font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px}
+.lv-desc{font-size:10px;color:var(--muted);line-height:1.4}
+
+.btn{display:block;width:100%;background:var(--gold);color:#000;font-weight:800;font-size:15px;letter-spacing:.5px;border:none;border-radius:12px;padding:17px;cursor:pointer;transition:all .2s}
+.btn:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted2);font-weight:600;font-size:14px;border-radius:10px;padding:13px;cursor:pointer;transition:all .2s;width:100%}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── QUIZ ── */
+.quiz-wrap{max-width:720px;margin:0 auto;padding:32px 24px 60px}
+.progress-top{margin-bottom:28px}
+.progress-bar-bg{background:rgba(255,255,255,0.06);border-radius:4px;height:3px;margin-bottom:10px}
+.progress-bar-fill{height:3px;background:var(--gold);border-radius:4px;transition:width .4s}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}
+.progress-meta .level-badge{display:flex;align-items:center;gap:6px}
+.stars-small{color:var(--gold);font-size:11px}
+
+.law-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.law-tag{font-size:10px;font-weight:700;letter-spacing:.5px;padding:4px 10px;border-radius:20px;border:1px solid}
+.tag-323{color:#60a5fa;border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.08)}
+.tag-152{color:#a78bfa;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)}
+.tag-326{color:#34d399;border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.08)}
+.tag-tk{color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.08)}
+.tag-cross{color:#f9a8d4;border-color:rgba(249,168,212,.3);background:rgba(249,168,212,.08)}
+.tag-77{color:#f87171;border-color:rgba(248,113,113,.3);background:rgba(248,113,113,.08)}
+.tag-125{color:#fb7185;border-color:rgba(251,113,133,.3);background:rgba(251,113,133,.08)}
+.tag-52{color:#2dd4bf;border-color:rgba(45,212,191,.3);background:rgba(45,212,191,.08)}
+.tag-transp{color:#c084fc;border-color:rgba(192,132,252,.3);background:rgba(192,132,252,.08)}
+.tag-53{color:#94a3b8;border-color:rgba(148,163,184,.3);background:rgba(148,163,184,.08)}
+
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px}
+.qnum{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.scenario-box{background:rgba(255,255,255,0.03);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:18px;font-size:13px;color:var(--muted2);line-height:1.6;font-style:italic}
+.qtext{font-size:17px;font-weight:600;line-height:1.5;margin-bottom:22px}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;font-size:14px;transition:all .15s;user-select:none;line-height:1.5}
+.opt:hover{border-color:var(--gold);background:var(--gold3)}
+.opt.selected{border-color:var(--gold);background:var(--gold3)}
+.opt.correct{border-color:var(--green);background:rgba(34,197,94,.1)}
+.opt.wrong{border-color:var(--red);background:rgba(239,68,68,.1)}
+.opt-letter{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
+.opt.correct .opt-letter{background:rgba(34,197,94,.2);color:var(--green)}
+.opt.wrong .opt-letter{background:rgba(239,68,68,.2);color:var(--red)}
+
+/* ── EXPLANATION ── */
+.explanation{margin-top:16px;display:none}
+.expl-correct{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:16px}
+.expl-wrong{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:20px}
+.expl-header{font-size:13px;font-weight:800;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.expl-correct .expl-header{color:var(--green)}
+.expl-wrong .expl-header{color:var(--red)}
+.expl-section{margin-top:14px}
+.expl-section-title{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px;text-transform:uppercase}
+.expl-text{font-size:13px;color:var(--muted2);line-height:1.7}
+.law-refs{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.law-ref{background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text);line-height:1.5}
+.law-ref strong{color:var(--gold);font-size:11px}
+.risks-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.risk-item{background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.5}
+.risk-fine{border-left:2px solid var(--red);color:#fca5a5}
+.risk-complaint{border-left:2px solid var(--orange);color:#fed7aa}
+.risk-disciplinary{border-left:2px solid var(--purple);color:#c4b5fd}
+.risk-legal{border-left:2px solid #94a3b8;color:#cbd5e1}
+.risk-label{font-size:10px;font-weight:800;letter-spacing:.5px;margin-bottom:3px;opacity:.7;text-transform:uppercase}
+.practical-box{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:12px;margin-top:8px;font-size:13px;color:#93c5fd;line-height:1.6}
+
+.btn-next{background:var(--gold);color:#000;font-weight:800;font-size:14px;border:none;border-radius:10px;padding:14px 28px;cursor:pointer;transition:all .2s;margin-top:16px;display:none}
+.btn-next:hover{background:var(--gold2)}
+
+/* ── RESULTS ── */
+.results-wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+.res-hero{text-align:center;margin-bottom:48px}
+.score-ring{width:140px;height:140px;border-radius:50%;border:4px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;position:relative}
+.score-ring-bg{position:absolute;inset:0;border-radius:50%}
+.score-num{font-size:38px;font-weight:900;color:var(--gold);line-height:1}
+.score-den{font-size:13px;color:var(--muted)}
+.res-level{font-size:20px;font-weight:800;margin-bottom:8px}
+.res-desc{color:var(--muted2);font-size:14px;max-width:480px;margin:0 auto;line-height:1.7}
+.res-meta{font-size:12px;color:var(--muted);margin-top:10px}
+
+.section-title{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.law-breakdown{margin-bottom:36px}
+.law-item{background:var(--card);border-radius:12px;padding:16px 18px;margin-bottom:8px}
+.law-item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.law-item-name{font-size:13px;font-weight:700}
+.law-item-score{font-size:14px;font-weight:800;color:var(--gold)}
+.bar-bg{background:rgba(255,255,255,.07);border-radius:3px;height:5px}
+.bar-fill{height:5px;border-radius:3px;transition:width .8s}
+.law-item-detail{font-size:11px;color:var(--muted);margin-top:6px}
+
+.strengths-section,.gaps-section,.critical-section{margin-bottom:28px}
+.strength-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.5;color:var(--muted2)}
+.strength-item:last-child{border-bottom:none}
+.strength-icon{flex-shrink:0;font-size:16px}
+.critical-item{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px;margin-bottom:8px;font-size:13px}
+.critical-item strong{color:#fca5a5;display:block;margin-bottom:4px}
+.critical-item span{color:var(--muted2);line-height:1.6}
+
+.recs-section{margin-bottom:36px}
+.rec-item{background:var(--card);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:8px;font-size:13px;color:var(--muted2);line-height:1.7}
+
+/* ── CTA ── */
+.cta-card{background:linear-gradient(135deg,rgba(201,162,39,.15),rgba(201,162,39,.05));border:1px solid rgba(201,162,39,.3);border-radius:16px;padding:32px;margin-bottom:32px;text-align:center}
+.cta-card h3{font-size:20px;font-weight:800;margin-bottom:10px}
+.cta-card p{color:var(--muted2);font-size:14px;margin-bottom:24px;line-height:1.7}
+.btn-tg{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#000;font-weight:800;font-size:15px;padding:15px 32px;border-radius:12px;border:none;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-tg:hover{background:var(--gold2);transform:translateY(-1px)}
+
+.res-actions{display:flex;gap:12px;flex-wrap:wrap}
+.res-actions .btn{flex:2}
+.res-actions .btn-ghost{flex:1;min-width:140px}
+
+/* ── ADAPTIVE INDICATOR ── */
+.adaptive-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--gold)}
+
+/* ── ACCESS GATE ── */
+.gate-wrap{max-width:460px;margin:0 auto;padding:100px 24px;text-align:center}
+.gate-logo{font-size:22px;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+.gate-subtitle{font-size:13px;color:var(--muted);margin-bottom:48px;letter-spacing:.5px}
+.gate-wrap h2{font-size:24px;font-weight:800;margin-bottom:8px}
+.gate-wrap p{font-size:14px;color:var(--muted2);margin-bottom:32px;line-height:1.6}
+.gate-input{width:100%;background:var(--card);border:2px solid var(--border);border-radius:12px;padding:16px 20px;color:var(--text);font-size:18px;font-family:'Inter',sans-serif;text-align:center;letter-spacing:4px;outline:none;transition:border .2s;margin-bottom:12px}
+.gate-input:focus{border-color:var(--gold)}
+.gate-input.error{border-color:var(--red)}
+.gate-error{font-size:13px;color:var(--red);margin-bottom:16px;min-height:18px}
+.gate-hint{font-size:12px;color:var(--muted);margin-top:20px;line-height:1.6}
+
+/* ── FONT SIZE ── */
+.font-controls{display:flex;align-items:center;gap:6px}
+.font-btn{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted2);font-size:12px;font-weight:700;padding:5px 10px;border-radius:6px;cursor:pointer;transition:all .15s;line-height:1}
+.font-btn:hover{border-color:var(--gold);color:var(--gold)}
+body.fs-lg{font-size:17px}
+body.fs-lg .qtext{font-size:20px}
+body.fs-lg .opt{font-size:16px}
+body.fs-lg .expl-text{font-size:15px}
+body.fs-lg .land .sub{font-size:18px}
+
+/* ── FOOTER ── */
+.site-footer{border-top:1px solid rgba(201,162,39,.15);padding:24px 40px;display:flex;align-items:center;gap:24px;margin-top:40px}
+.footer-contacts{display:flex;flex:1;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:8px}
+.footer-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.footer-link{color:var(--muted2);font-size:13px;text-decoration:none;transition:color .15s;font-weight:500}
+.footer-link:hover{color:var(--gold)}
+.footer-copy{font-size:12px;color:var(--muted)}
+
+/* ── CTA BUTTONS ROW ── */
+.cta-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn-cta-tg{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#000;font-weight:800;font-size:14px;padding:13px 24px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-cta-tg:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-cta-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid rgba(255,255,255,.15);color:var(--text);font-weight:600;font-size:14px;padding:13px 22px;border-radius:10px;text-decoration:none;transition:all .2s}
+.btn-cta-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+@media(max-width:600px){
+  .header{padding:12px 16px}
+  .logo-abbr{font-size:15px}
+  .header-label{display:none}
+  .land,.quiz-wrap,.results-wrap{padding-left:16px;padding-right:16px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .roles-grid{grid-template-columns:1fr}
+  .levels-row{grid-template-columns:1fr 1fr}
+  .risks-grid{grid-template-columns:1fr}
+  .site-footer{padding:20px 18px;flex-direction:column;align-items:flex-start}
+}
+@media print{
+  body>*{display:none!important}
+  #print-area{display:block!important}
+}
+#print-area{display:none}
+</style>
+</head>
+<body>
+
+<!-- SVG лиса — эталон, скрытый -->
+<svg id="fox-master" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="200 180 900 680">
+    <path d="M 522,477 L 522,478 L 513,487 L 513,489 L 511,491 L 511,492 L 510,493 L 510,494 L 509,495 L 509,497 L 507,499 L 507,501 L 506,502 L 506,504 L 505,505 L 505,508 L 504,509 L 504,514 L 503,515 L 504,516 L 503,517 L 504,518 L 504,519 L 503,520 L 504,521 L 504,522 L 503,523 L 503,528 L 504,529 L 504,534 L 505,535 L 505,538 L 506,539 L 506,541 L 507,542 L 507,544 L 508,545 L 508,547 L 509,548 L 509,550 L 510,551 L 510,552 L 511,553 L 511,554 L 512,555 L 512,556 L 513,557 L 513,558 L 514,559 L 514,560 L 516,562 L 516,563 L 518,565 L 518,566 L 522,570 L 522,571 L 526,575 L 526,576 L 530,580 L 530,581 L 532,583 L 533,583 L 534,584 L 534,585 L 535,585 L 538,588 L 543,593 L 544,593 L 545,594 L 545,595 L 546,595 L 548,597 L 549,597 L 553,601 L 554,601 L 557,604 L 558,604 L 560,606 L 561,606 L 562,607 L 563,607 L 564,608 L 565,608 L 567,610 L 568,610 L 569,611 L 570,611 L 572,613 L 573,613 L 575,615 L 577,615 L 578,616 L 579,616 L 580,617 L 581,617 L 583,619 L 585,619 L 586,619 L 587,620 L 588,620 L 589,621 L 590,621 L 591,622 L 593,622 L 594,623 L 596,623 L 597,624 L 598,624 L 599,625 L 602,625 L 603,626 L 605,626 L 606,627 L 609,627 L 610,628 L 612,629 L 615,629 L 616,630 L 619,630 L 621,630 L 624,630 L 625,631 L 630,631 L 631,632 L 638,632 L 639,633 L 667,633 L 668,632 L 676,632 L 677,631 L 682,631 L 683,630 L 686,630 L 687,629 L 691,629 L 692,628 L 695,628 L 696,627 L 698,627 L 699,626 L 701,626 L 702,625 L 704,625 L 706,624 L 708,624 L 709,624 L 710,623 L 712,622 L 714,621 L 716,620 L 717,620 L 718,619 L 720,618 L 722,618 L 723,617 L 726,615 L 727,615 L 728,614 L 730,614 L 731,613 L 732,613 L 735,610 L 736,610 L 738,608 L 739,608 L 742,605 L 743,605 L 745,603 L 746,603 L 750,599 L 751,599 L 763,587 L 763,586 L 767,582 L 767,581 L 769,579 L 771,576 L 772,574 L 774,571 L 775,569 L 775,567 L 776,566 L 776,565 L 777,564 L 777,563 L 779,561 L 779,560 L 780,559 L 780,556 L 782,554 L 782,551 L 782,548 L 783,547 L 783,544 L 784,543 L 784,540 L 785,539 L 785,532 L 785,518 L 785,516 L 785,515 L 783,515 L 782,520 L 782,522 L 782,524 L 781,525 L 781,526 L 780,527 L 780,528 L 779,529 L 779,530 L 778,531 L 778,532 L 777,533 L 777,534 L 776,535 L 776,536 L 774,538 L 774,539 L 772,541 L 772,542 L 771,543 L 770,544 L 768,546 L 768,547 L 765,550 L 762,554 L 757,559 L 756,559 L 754,561 L 753,561 L 752,562 L 750,563 L 749,564 L 748,564 L 746,566 L 744,566 L 743,565 L 743,564 L 742,563 L 746,559 L 750,555 L 750,554 L 752,552 L 753,551 L 753,550 L 755,548 L 755,547 L 757,545 L 757,544 L 758,543 L 758,542 L 760,540 L 760,539 L 761,538 L 761,536 L 763,534 L 763,532 L 764,531 L 765,529 L 765,526 L 766,525 L 766,523 L 767,522 L 768,520 L 768,517 L 769,516 L 769,512 L 771,510 L 771,507 L 771,504 L 772,503 L 772,501 L 773,500 L 773,497 L 774,496 L 774,494 L 775,493 L 775,492 L 776,491 L 776,489 L 777,489 L 777,486 L 777,484 L 778,483 L 778,482 L 779,481 L 779,480 L 777,483 L 776,483 L 775,484 L 774,484 L 773,485 L 772,485 L 771,486 L 770,486 L 769,487 L 768,487 L 767,488 L 766,488 L 765,489 L 764,490 L 763,491 L 762,491 L 758,495 L 753,500 L 753,501 L 747,507 L 747,508 L 741,514 L 739,516 L 739,517 L 737,519 L 736,520 L 733,523 L 732,523 L 731,524 L 731,525 L 729,527 L 728,527 L 727,528 L 727,529 L 726,530 L 725,530 L 724,531 L 721,534 L 720,534 L 717,537 L 716,538 L 715,539 L 714,539 L 711,542 L 710,542 L 707,545 L 706,545 L 704,547 L 703,547 L 701,549 L 700,549 L 699,550 L 698,550 L 696,552 L 694,552 L 693,553 L 692,554 L 691,555 L 690,555 L 689,556 L 687,556 L 686,557 L 685,558 L 683,558 L 682,559 L 681,559 L 679,561 L 677,561 L 676,562 L 675,562 L 674,563 L 672,563 L 671,564 L 669,564 L 668,565 L 666,566 L 665,566 L 664,567 L 662,567 L 660,568 L 658,568 L 656,568 L 655,569 L 654,569 L 653,570 L 651,570 L 650,571 L 646,571 L 645,572 L 641,572 L 640,573 L 638,572 L 637,573 L 635,573 L 633,573 L 632,574 L 630,574 L 629,573 L 627,574 L 598,574 L 597,573 L 593,573 L 592,572 L 589,572 L 588,571 L 586,572 L 584,572 L 583,571 L 581,571 L 580,570 L 577,570 L 576,569 L 574,569 L 573,568 L 571,568 L 570,567 L 568,567 L 567,566 L 565,566 L 564,565 L 563,565 L 561,563 L 560,563 L 559,562 L 557,562 L 556,561 L 553,559 L 552,559 L 551,558 L 550,558 L 547,555 L 546,555 L 543,552 L 542,552 L 540,550 L 540,549 L 535,545 L 535,544 L 531,541 L 531,540 L 530,539 L 527,535 L 527,533 L 525,531 L 524,529 L 523,527 L 523,525 L 522,524 L 521,522 L 521,520 L 520,519 L 520,518 L 520,516 L 520,512 L 519,511 L 519,493 L 520,492 L 520,487 L 521,486 L 521,485 L 521,483 L 521,481 L 522,480 L 522,479 L 523,478 L 523,477 Z" fill="white"/>
+    <path d="M 685,420 L 684,421 L 683,421 L 682,422 L 681,423 L 680,423 L 675,428 L 674,428 L 672,430 L 668,434 L 667,434 L 664,437 L 663,437 L 660,440 L 659,440 L 657,442 L 656,442 L 654,444 L 653,444 L 652,445 L 651,445 L 649,447 L 648,447 L 647,448 L 646,448 L 645,449 L 644,449 L 643,450 L 639,450 L 638,449 L 636,448 L 635,448 L 633,446 L 632,446 L 629,443 L 623,439 L 622,439 L 620,437 L 619,437 L 615,433 L 614,433 L 609,428 L 609,431 L 610,432 L 611,434 L 611,435 L 612,436 L 613,438 L 613,439 L 614,440 L 615,442 L 615,443 L 616,444 L 617,446 L 617,447 L 618,448 L 618,451 L 620,452 L 620,454 L 621,455 L 621,457 L 623,459 L 624,462 L 624,465 L 625,466 L 625,468 L 626,469 L 627,471 L 627,473 L 628,474 L 628,476 L 629,477 L 629,479 L 630,482 L 630,485 L 631,486 L 632,489 L 632,491 L 633,492 L 634,496 L 634,498 L 634,502 L 635,503 L 636,506 L 636,510 L 637,511 L 638,515 L 638,519 L 639,520 L 640,524 L 640,527 L 640,531 L 641,532 L 642,537 L 642,543 L 643,544 L 644,552 L 644,554 L 644,557 L 644,561 L 645,562 L 645,563 L 646,564 L 646,561 L 647,560 L 647,554 L 647,544 L 648,543 L 648,537 L 649,536 L 649,530 L 650,529 L 650,522 L 651,521 L 651,518 L 651,513 L 652,512 L 652,508 L 653,507 L 654,503 L 654,499 L 655,498 L 655,494 L 656,493 L 656,492 L 656,490 L 656,488 L 657,487 L 657,483 L 658,482 L 659,479 L 659,476 L 660,475 L 660,473 L 661,472 L 661,470 L 661,468 L 662,467 L 663,465 L 663,463 L 664,462 L 665,460 L 665,458 L 667,456 L 667,454 L 668,452 L 668,451 L 670,449 L 670,446 L 671,445 L 671,444 L 673,442 L 673,441 L 674,440 L 675,438 L 675,436 L 677,434 L 679,431 L 679,430 L 680,429 L 681,427 L 681,426 L 684,423 L 685,421 L 686,420 Z" fill="white"/>
+    <path d="M 700,468 L 699,469 L 698,469 L 697,470 L 696,470 L 695,471 L 694,471 L 692,473 L 691,473 L 687,477 L 686,477 L 685,478 L 683,481 L 682,481 L 681,483 L 680,483 L 679,485 L 679,487 L 678,488 L 678,489 L 677,490 L 677,491 L 676,492 L 676,493 L 675,494 L 675,495 L 674,496 L 674,497 L 673,498 L 673,501 L 672,505 L 672,508 L 671,509 L 671,514 L 670,515 L 670,523 L 669,524 L 669,529 L 669,531 L 669,538 L 670,539 L 670,546 L 671,547 L 672,550 L 673,547 L 674,547 L 676,545 L 677,545 L 679,543 L 680,543 L 681,542 L 683,542 L 683,540 L 684,540 L 685,539 L 686,537 L 689,534 L 690,531 L 690,528 L 689,527 L 689,524 L 688,523 L 688,521 L 688,518 L 687,517 L 687,504 L 688,503 L 688,498 L 689,497 L 689,493 L 690,492 L 690,489 L 691,488 L 691,484 L 692,483 L 692,482 L 693,481 L 693,480 L 694,479 L 694,478 L 695,477 L 695,475 L 697,473 L 697,471 Z" fill="white"/>
+    <path d="M 580,401 L 580,403 L 579,404 L 578,403 L 576,402 L 574,402 L 573,403 L 572,403 L 570,405 L 569,405 L 565,409 L 564,410 L 563,410 L 562,412 L 561,412 L 560,413 L 553,421 L 549,426 L 549,427 L 548,428 L 546,431 L 543,435 L 542,437 L 541,441 L 540,443 L 539,445 L 538,449 L 537,451 L 537,454 L 536,455 L 536,457 L 535,458 L 535,461 L 534,462 L 534,469 L 533,474 L 533,486 L 534,487 L 534,496 L 535,497 L 535,502 L 536,503 L 537,506 L 537,508 L 538,509 L 539,512 L 539,514 L 540,515 L 541,518 L 542,520 L 543,521 L 543,522 L 544,523 L 545,526 L 545,527 L 547,529 L 549,532 L 553,537 L 559,544 L 560,544 L 561,545 L 562,547 L 563,547 L 567,551 L 568,551 L 570,552 L 574,556 L 576,556 L 578,558 L 580,559 L 582,559 L 583,560 L 584,560 L 588,563 L 591,563 L 592,564 L 594,565 L 596,565 L 597,565 L 598,566 L 603,566 L 604,567 L 611,567 L 612,568 L 619,568 L 620,567 L 620,565 L 621,564 L 621,554 L 620,553 L 620,548 L 620,541 L 619,540 L 619,534 L 618,533 L 618,531 L 617,530 L 617,526 L 616,525 L 616,522 L 615,520 L 615,518 L 614,517 L 614,514 L 613,513 L 612,511 L 611,509 L 611,507 L 610,506 L 610,503 L 609,502 L 608,500 L 607,498 L 607,496 L 606,495 L 605,493 L 604,491 L 603,489 L 601,486 L 600,484 L 599,482 L 599,480 L 597,478 L 596,476 L 596,474 L 593,471 L 591,468 L 589,465 L 587,462 L 581,455 L 580,454 L 577,451 L 575,449 L 576,448 L 579,448 L 580,449 L 583,449 L 585,450 L 587,450 L 589,451 L 591,452 L 593,454 L 595,454 L 597,456 L 598,456 L 607,465 L 608,467 L 609,468 L 609,469 L 611,471 L 613,474 L 614,476 L 615,478 L 615,472 L 614,471 L 614,467 L 613,466 L 612,461 L 611,458 L 611,454 L 609,452 L 609,448 L 608,447 L 607,445 L 607,443 L 606,442 L 606,440 L 605,439 L 604,437 L 603,435 L 600,431 L 598,427 L 597,425 L 594,421 L 591,417 L 586,411 L 585,410 L 585,409 L 584,409 L 582,407 L 581,406 L 579,404 L 580,403 Z" fill="white"/>
+    <path d="M 531,192 L 529,194 L 529,205 L 528,215 L 529,228 L 528,232 L 529,247 L 530,254 L 531,260 L 532,263 L 533,272 L 534,280 L 535,284 L 536,289 L 537,292 L 538,295 L 539,298 L 539,301 L 540,303 L 541,306 L 542,307 L 542,309 L 543,311 L 544,313 L 542,315 L 540,316 L 538,317 L 536,317 L 534,318 L 532,320 L 530,320 L 527,322 L 522,323 L 520,324 L 518,325 L 515,325 L 511,327 L 508,327 L 504,328 L 502,328 L 499,329 L 500,328 L 504,332 L 506,334 L 507,335 L 509,337 L 516,343 L 517,357 L 518,357 L 521,360 L 522,360 L 525,363 L 527,364 L 529,365 L 531,366 L 533,368 L 535,369 L 538,371 L 541,373 L 544,375 L 548,377 L 551,379 L 553,380 L 555,381 L 558,383 L 560,384 L 562,385 L 565,387 L 569,390 L 572,391 L 574,392 L 576,393 L 578,395 L 582,398 L 584,399 L 590,404 L 594,407 L 598,410 L 604,415 L 608,418 L 610,419 L 612,422 L 614,423 L 615,424 L 616,425 L 621,430 L 623,428 L 627,427 L 629,426 L 632,425 L 635,426 L 637,424 L 643,425 L 645,424 L 649,425 L 652,426 L 655,428 L 657,429 L 660,431 L 661,431 L 666,425 L 677,415 L 683,410 L 689,405 L 692,403 L 696,400 L 699,398 L 703,395 L 706,393 L 709,391 L 712,389 L 714,388 L 717,386 L 719,385 L 723,382 L 726,381 L 728,379 L 730,379 L 733,376 L 735,375 L 740,372 L 742,371 L 746,368 L 750,365 L 753,363 L 758,359 L 765,353 L 766,352 L 768,351 L 770,349 L 770,346 L 768,347 L 766,345 L 762,342 L 765,339 L 766,339 L 775,330 L 777,327 L 779,327 L 774,326 L 770,326 L 768,326 L 765,326 L 762,324 L 759,322 L 756,321 L 753,321 L 750,320 L 746,319 L 743,317 L 740,315 L 738,314 L 735,312 L 736,309 L 737,306 L 739,301 L 740,299 L 741,296 L 742,291 L 742,288 L 743,284 L 744,279 L 745,273 L 746,265 L 747,256 L 748,248 L 749,236 L 750,220 L 751,213 L 751,206 L 750,198 L 749,195 L 748,193 L 747,192 L 744,193 L 742,195 L 740,196 L 734,201 L 730,203 L 725,208 L 719,213 L 713,218 L 707,223 L 699,230 L 698,231 L 684,244 L 672,255 L 669,259 L 668,258 L 664,257 L 656,257 L 624,257 L 620,258 L 615,259 L 610,259 L 603,252 L 591,240 L 580,229 L 572,222 L 564,215 L 559,211 L 554,207 L 549,203 L 546,201 L 542,198 L 538,195 L 535,193 L 534,192 Z" fill="white"/>
+</svg>
+
+<!-- ══════════ ACCESS GATE ══════════ -->
+<div id="screen-gate" class="screen active">
+<div class="gate-wrap">
+  <div class="gate-logo">
+    <span class="logo-part">Е<span class="logo-dot">.</span>А</span>
+    <span class="fox-slot" data-h="52" style="margin:0 8px"></span>
+    <span class="logo-part">Б<span class="logo-dot">.</span>Р</span>
+    <span class="logo-med" style="font-size:14px;margin-left:16px">· med</span>
+  </div>
+  <div class="gate-subtitle">АНТОШИНА ЕЛИЗАВЕТА · ПРАВОВОЙ ТРЕНАЖЁР</div>
+  <h2>Введите код доступа</h2>
+  <p>Доступ предоставляется Антошиной Елизаветой.<br>Если у вас нет кода — напишите в <a href="https://t.me/eabrmed" target="_blank" style="color:var(--gold)">Telegram</a>.</p>
+  <input class="gate-input" id="gate-input" type="password" placeholder="• • • • • •" maxlength="20"
+    onkeydown="if(event.key==='Enter')checkCode()"
+    oninput="document.getElementById('gate-input').classList.remove('error');document.getElementById('gate-err').textContent=''">
+  <div class="gate-error" id="gate-err"></div>
+  <button class="btn" onclick="checkCode()">ВОЙТИ →</button>
+  <div class="gate-hint">Продукт защищён авторским правом.<br>© Антошина Елизавета, ЕАБР · 2026. Все права защищены.</div>
+</div>
+</div>
+
+<div id="main-content" style="display:none">
+<div class="header">
+  <a class="logo" href="#">
+    <span class="logo-part">Е<span class="logo-dot">.</span>А</span>
+    <span class="fox-slot" data-h="42"></span>
+    <span class="logo-part">Б<span class="logo-dot">.</span>Р</span>
+    <span class="logo-med">· med</span>
+  </a>
+  <div class="header-right">
+    <span class="header-label">МЕДЗНАНИЯ · ПРАВОВОЙ ТРЕНАЖЁР</span>
+    <div class="font-controls">
+      <button class="font-btn" onclick="setFont('normal')" title="Обычный шрифт">A</button>
+      <button class="font-btn" onclick="setFont('lg')" title="Крупный шрифт">A+</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ LANDING ══════════ -->
+<div id="screen-landing" class="screen active">
+<div class="land">
+  <div class="badge">📋 ДИАГНОСТИКА ПРАВОВЫХ ЗНАНИЙ · 2026</div>
+  <h1>Проверь правовые<br>знания: <span>медицина<br>и закон</span></h1>
+  <p style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:24px;margin-top:-10px">ЕАБР · МЕД · ПРОДУКТ АНТОШИНОЙ ЕЛИЗАВЕТЫ</p>
+  <p class="sub">Адаптивный тренажёр на пересечении ФЗ-323, ФЗ-152, ФЗ-326 и ТК РФ. Реальные кейсы. Разбор ошибок с рисками и штрафами. Персональный отчёт.</p>
+
+  <div class="author-card">
+    <div class="av">EA</div>
+    <div>
+      <div class="av-name">Антошина Елизавета</div>
+      <div class="av-role">Бизнес-тренер медицинских команд · Антикризисный PR · Право в здравоохранении</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n">30+</div><div class="stat-l">ВОПРОСОВ</div></div>
+    <div class="stat"><div class="stat-n">4</div><div class="stat-l">УРОВНЯ</div></div>
+    <div class="stat"><div class="stat-n">~15</div><div class="stat-l">МИНУТ</div></div>
+    <div class="stat"><div class="stat-n">март<br>2026</div><div class="stat-l">ОБНОВЛЕНО</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px">
+    <div class="stat" style="text-align:left;padding:12px 16px">
+      <div style="font-size:10px;font-weight:800;color:var(--blue);letter-spacing:.5px;margin-bottom:4px">ФЗ-323</div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.4">Об охране здоровья граждан</div>
+    </div>
+    <div class="stat" style="text-align:left;padding:12px 16px">
+      <div style="font-size:10px;font-weight:800;color:#a78bfa;letter-spacing:.5px;margin-bottom:4px">ФЗ-152</div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.4">О персональных данных</div>
+    </div>
+    <div class="stat" style="text-align:left;padding:12px 16px">
+      <div style="font-size:10px;font-weight:800;color:#34d399;letter-spacing:.5px;margin-bottom:4px">ФЗ-326</div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.4">Об обязательном медицинском страховании</div>
+    </div>
+    <div class="stat" style="text-align:left;padding:12px 16px">
+      <div style="font-size:10px;font-weight:800;color:#fb923c;letter-spacing:.5px;margin-bottom:4px">ТК РФ</div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.4">Трудовой кодекс Российской Федерации</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:12px;padding:14px 18px;margin-bottom:28px;font-size:12px;line-height:1.8;color:var(--muted2)">
+    <span style="font-weight:800;color:#60a5fa;letter-spacing:.5px">✦ АКТУАЛЬНО НА МАРТ 2026</span><br>
+    Включены все изменения ФЗ-323 с августа 2025 по март 2026:<br>
+    · <strong>ФЗ-261</strong> (03.08.2025) — уточнение понятия «клинические рекомендации»<br>
+    · <strong>ФЗ-150</strong> (01.09.2025) — право врача назначать БАДы (ст. 37 ч. 17)<br>
+    · <strong>ФЗ-304</strong> (01.03.2026) — федеральный регистр пациентов, согласие (ст. 91.1)<br>
+    · <strong>ФЗ-424</strong> (01.03.2026) — обязательное наставничество для выпускников (ст. 69)<br>
+    · <strong>ФЗ-515</strong> (01.04.2026) — НМИЦ, новая ст. 79²<br>
+    Штрафы ФЗ-152 — редакция 30.05.2025.
+  </div>
+
+  <div class="roles-section">
+    <h2>Выбери свою роль</h2>
+    <div class="roles-grid" id="roles-grid">
+      <div class="role-card" data-role="doctor" onclick="selectRole(this)">
+        <div class="role-icon">👨‍⚕️</div>
+        <div class="role-name">Врач</div>
+        <div class="role-desc">Согласия, врачебная тайна, ответственность лечащего врача</div>
+      </div>
+      <div class="role-card" data-role="nurse" onclick="selectRole(this)">
+        <div class="role-icon">👩‍⚕️</div>
+        <div class="role-name">Медицинская сестра</div>
+        <div class="role-desc">Документация, трудовые права, работа с данными пациентов</div>
+      </div>
+      <div class="role-card" data-role="admin" onclick="selectRole(this)">
+        <div class="role-icon">🏥</div>
+        <div class="role-name">Руководитель / Управляющий / Администратор</div>
+        <div class="role-desc">ОМС, персональные данные, организация помощи, риски клиники</div>
+      </div>
+      <div class="role-card" data-role="student" onclick="selectRole(this)">
+        <div class="role-icon">📚</div>
+        <div class="role-name">Студент</div>
+        <div class="role-desc">Базовые нормы, права пациентов, профессиональная ответственность</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="levels-row">
+    <div class="lv"><div class="lv-stars">★</div><div class="lv-name">Базовый</div><div class="lv-desc">Обязательные нормы</div></div>
+    <div class="lv"><div class="lv-stars">★★</div><div class="lv-name">Практический</div><div class="lv-desc">Кейсы из работы</div></div>
+    <div class="lv"><div class="lv-stars">★★★</div><div class="lv-name">Продвинутый</div><div class="lv-desc">Пересечения законов</div></div>
+    <div class="lv"><div class="lv-stars">★★★★</div><div class="lv-name">Эксперт</div><div class="lv-desc">Правовые ловушки</div></div>
+  </div>
+
+  <button class="btn" id="start-btn" onclick="startQuiz()" disabled>НАЧАТЬ ДИАГНОСТИКУ →</button>
+  <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:14px">Регистрация не нужна · Анонимно · Результат скачаешь сразу</p>
+</div>
+</div>
+
+<!-- ══════════ QUIZ ══════════ -->
+<div id="screen-quiz" class="screen">
+<div class="quiz-wrap">
+  <div class="progress-top">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar"></div></div>
+    <div class="progress-meta">
+      <span id="p-text">Вопрос 1</span>
+      <div class="level-badge">
+        <span class="adaptive-pill" id="level-pill">★ Базовый</span>
+      </div>
+    </div>
+  </div>
+  <div id="q-container"></div>
+</div>
+</div>
+
+<!-- ══════════ RESULTS ══════════ -->
+<div id="screen-results" class="screen">
+<div class="results-wrap">
+
+  <div class="res-hero">
+    <div class="score-ring">
+      <div class="score-num" id="r-score">0</div>
+      <div class="score-den" id="r-den">из 0</div>
+    </div>
+    <div class="res-level" id="r-level"></div>
+    <div class="res-desc" id="r-desc"></div>
+    <div class="res-meta" id="r-meta"></div>
+  </div>
+
+  <div class="law-breakdown">
+    <div class="section-title">Результаты по блокам</div>
+    <div id="law-breakdown"></div>
+  </div>
+
+  <div class="strengths-section" id="strengths-wrap" style="display:none">
+    <div class="section-title">Сильные стороны</div>
+    <div id="strengths-list"></div>
+  </div>
+
+  <div class="gaps-section" id="gaps-wrap" style="display:none">
+    <div class="section-title">Зоны роста</div>
+    <div id="gaps-list"></div>
+  </div>
+
+  <div class="critical-section" id="critical-wrap" style="display:none">
+    <div class="section-title">🚨 Критические пробелы (юридические риски)</div>
+    <div id="critical-list"></div>
+  </div>
+
+  <div class="recs-section">
+    <div class="section-title">Персональные рекомендации</div>
+    <div id="recs-list"></div>
+  </div>
+
+  <div class="cta-card">
+    <h3>Хочешь устранить пробелы?</h3>
+    <p>Антошина Елизавета проводит индивидуальные и корпоративные тренинги по медицинскому праву. Разбираем именно твои слабые зоны — с кейсами, практикой и инструментами защиты.</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:20px">Индивидуально · Для команд клиник · Онлайн и офлайн</p>
+    <div class="cta-btns">
+      <a class="btn-cta-tg" href="https://t.me/eabrmed" target="_blank">✈ Написать в Telegram</a>
+      <a class="btn-cta-secondary" href="https://wa.me/74957286916" target="_blank">💬 WhatsApp</a>
+      <a class="btn-cta-secondary" href="https://ea-brmed.ru" target="_blank">🌐 Сайт</a>
+      <a class="btn-cta-secondary" href="https://www.instagram.com/elizavetaantb.r" target="_blank" rel="noopener">📸 Кейсы · Фото</a>
+    </div>
+  </div>
+
+  <div class="res-actions">
+    <button class="btn" onclick="savePDF()">⬇ Сохранить PDF</button>
+    <button class="btn-ghost" onclick="printPDF()">🖨 Распечатать</button>
+    <button class="btn-ghost" onclick="restartQuiz()">Пройти снова</button>
+  </div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div style="display:flex;flex-direction:column;line-height:1.5;flex-shrink:0">
+    <span style="font-size:15px;font-weight:600;color:var(--text)">Антошина Елизавета</span>
+    <span style="font-size:11px;color:var(--muted)">Бизнес-тренер</span>
+    <span style="font-size:10px;color:var(--muted)">© ЕАБР · 2026</span>
+  </div>
+  <div class="footer-contacts">
+    <a class="footer-link" href="https://t.me/eabrmed" target="_blank">Telegram</a>
+    <a class="footer-link" href="https://wa.me/74957286916" target="_blank">WhatsApp</a>
+    <a class="footer-link" href="tel:+74957286916">+7 (495) 728-69-16</a>
+    <a class="footer-link" href="https://ea-brmed.ru" target="_blank">ea-brmed.ru</a>
+    <a class="footer-link" href="https://www.instagram.com/elizavetaantb.r" target="_blank" rel="noopener">Кейсы · Фото</a>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:0">
+      <span class="logo-part" style="font-size:17px">Е<span class="logo-dot">.</span>А</span>
+      <span class="fox-slot" data-h="34" style="margin:0 5px"></span>
+      <span class="logo-part" style="font-size:17px">Б<span class="logo-dot">.</span>Р</span>
+      <span class="logo-med" style="font-size:11px;margin-left:12px">· med</span>
+    </div>
+    <span style="font-size:9px;color:var(--muted);letter-spacing:1px">МедЗнания · Правовой тренажёр</span>
+  </div>
+</footer>
+</div><!-- /main-content -->
+
+<script>
+// ══════════════════════════════════════════════════════
+// QUESTIONS DATABASE
+// ══════════════════════════════════════════════════════
+const Q = [
+
+// ─── ФЗ-323: Права пациента ───────────────────────────
+{id:1,level:1,laws:['ФЗ-323'],topic:'rights',roles:['all'],
+scenario:'Пациентка Мария пришла в поликлинику и хочет сменить участкового терапевта.',
+text:'Как часто гражданин вправе выбирать врача при оказании первичной медико-санитарной помощи?',
+options:['В любое время без ограничений','Не чаще одного раза в год','Только при переезде или смене страховой','По решению главного врача'],
+correct:1,
+expl:{ok:'Ст. 21 ФЗ-323: выбор врача не чаще одного раза в год — базовое правило для первичной медико-санитарной помощи.',
+wrong:'Распространённая ошибка: считать, что право выбора безграничное. Закон устанавливает конкретный лимит — 1 раз в год.',
+refs:[{law:'ФЗ-323',art:'21',text:'Выбор врача и медицинской организации'}],
+sub:[],practical:'На практике: пациент пишет заявление главному врачу. Отказать нельзя, если нет обоснованных медицинских причин.',
+risks:{fine:'',complaint:'Жалоба в Росздравнадзор при отказе',disciplinary:'Выговор главному врачу',legal:''}}},
+
+{id:2,level:1,laws:['ФЗ-323'],topic:'rights',roles:['all'],
+scenario:'Пациенту с онкологией врач не хочет сообщать плохой прогноз, чтобы не расстраивать.',
+text:'Вправе ли пациент потребовать не сообщать ему неблагоприятный прогноз заболевания?',
+options:['Нет — врач обязан сказать всё','Да — если пациент сам запретил, прогноз ему не сообщается','Только если пациент недееспособен','Да, но информация передаётся родственникам автоматически'],
+correct:1,
+expl:{ok:'Ст. 22 ФЗ-323: пациент вправе отказаться от получения информации. Это его право, а не уклонение врача.',
+wrong:'Ошибка: думать, что врач обязан говорить всё и всегда. Закон защищает право пациента на незнание.',
+refs:[{law:'ФЗ-323',art:'22',text:'Информация о состоянии здоровья'}],
+sub:[],practical:'Важно: запрет пациента должен быть зафиксирован в медкарте. Без фиксации врач обязан информировать.',
+risks:{fine:'',complaint:'',disciplinary:'Ответственность за нарушение права на информацию',legal:''}}},
+
+{id:3,level:1,laws:['ФЗ-323'],topic:'consent',roles:['all'],
+scenario:'15-летний подросток обратился в клинику за консультацией. Родителей нет рядом.',
+text:'Кто вправе дать добровольное информированное согласие на медицинское вмешательство для пациента 15 лет?',
+options:['Только родители или опекуны','Сам пациент — с 15 лет он даёт согласие самостоятельно','Главный врач как представитель клиники','Педиатр, если это в интересах ребёнка'],
+correct:1,
+expl:{ok:'Ст. 54 ФЗ-323: с 15 лет гражданин самостоятельно даёт согласие. Исключение — наркологические болезни (с 16 лет).',
+wrong:'Частая ошибка: считать, что родители всегда нужны. Нет — с 15 лет подросток юридически самостоятелен в медицине.',
+refs:[{law:'ФЗ-323',art:'54',text:'Права несовершеннолетних'},{law:'ФЗ-323',art:'20',text:'Добровольное информированное согласие'}],
+sub:['Приказ Минздрава №925н: форма ДИС'],
+practical:'Исключение: при наркологических заболеваниях порог — 16 лет. Для прерывания беременности — также особые правила.',
+risks:{fine:'',complaint:'Жалоба родителей в Росздравнадзор',disciplinary:'При нарушении — взыскание',legal:''}}},
+
+{id:4,level:2,laws:['ФЗ-323'],topic:'refusal',roles:['all'],
+scenario:'Взрослый пациент в сознании отказывается от операции, которая, по мнению врача, необходима для спасения жизни.',
+text:'Как правильно оформить отказ от медицинского вмешательства?',
+options:['Вызвать родственников и уговорить','Зафиксировать устно в ординаторской','Оформить в медицинской документации с подписями пациента и медработника','Провести врачебную комиссию и переоформить согласие'],
+correct:2,
+expl:{ok:'Ст. 20 ФЗ-323: отказ оформляется письменно в медкарте, подписывается пациентом и медработником. Это защита и пациента, и врача.',
+wrong:'Устная фиксация не защитит врача юридически. Без подписи пациента — это слово против слова при любом конфликте.',
+refs:[{law:'ФЗ-323',art:'20',text:'Отказ от медицинского вмешательства'}],
+sub:['Приказ Минздрава №834н: формы медицинской документации'],
+practical:'Важно: при отказе врач обязан в доступной форме объяснить возможные последствия. Этот разговор тоже фиксируется.',
+risks:{fine:'',complaint:'Иск пациента или семьи при неблагоприятном исходе',disciplinary:'',legal:'Гражданская ответственность при отсутствии документа'}}},
+
+// ─── ФЗ-323: Врачебная тайна ────────────────────────
+{id:5,level:1,laws:['ФЗ-323'],topic:'secret',roles:['all'],
+scenario:'Подруга медсестры работает в той же больнице и спрашивает: "А что там с Ивановым, он лежит у вас?"',
+text:'Является ли факт обращения пациента за медицинской помощью сведением, составляющим врачебную тайну?',
+options:['Нет — только диагноз является тайной','Да — факт обращения тоже охраняется','Только если пациент попросил о конфиденциальности','Зависит от статуса клиники'],
+correct:1,
+expl:{ok:'Ст. 13 ФЗ-323: врачебная тайна включает факт обращения, состояние здоровья, диагноз и любые иные сведения, полученные при лечении.',
+wrong:'Ошибка: думать, что "просто факт" — это безобидно. "Иванов лежит у вас" — уже нарушение врачебной тайны.',
+refs:[{law:'ФЗ-323',art:'13, ч.1',text:'Состав врачебной тайны'}],
+sub:[],practical:'Даже "да, он у нас" — нарушение. Правильный ответ на любой запрос третьих лиц: "Мы не можем подтверждать или опровергать".',
+risks:{fine:'до 50 000 руб. (ст. 13.14 КоАП)',complaint:'Жалоба в Росздравнадзор, иск о моральном вреде',disciplinary:'Дисциплинарное взыскание вплоть до увольнения',legal:'Ст. 137 УК РФ при систематическом нарушении'}}},
+
+{id:6,level:2,laws:['ФЗ-323'],topic:'secret',roles:['all'],
+scenario:'Умер пациент. Его дочь хочет узнать диагноз и историю лечения — "чтобы понять, что произошло".',
+text:'Сохраняется ли врачебная тайна после смерти пациента?',
+options:['Нет — после смерти тайна прекращается','Да — врачебная тайна сохраняется и после смерти','Только в течение 3 лет после смерти','Сохраняется только если завещание это предусматривает'],
+correct:1,
+expl:{ok:'Ст. 13 ФЗ-323 прямо указывает: обязанность сохранять врачебную тайну действует в том числе после смерти человека.',
+wrong:'Распространённое заблуждение. Смерть не прекращает защиту данных пациента. Это важно знать всем медработникам.',
+refs:[{law:'ФЗ-323',art:'13',text:'Сохранение врачебной тайны после смерти'}],
+sub:[],practical:'Родственники могут получить информацию только если пациент при жизни дал на это согласие, либо через суд (при оспаривании качества помощи).',
+risks:{fine:'до 50 000 руб.',complaint:'Жалоба на клинику',disciplinary:'Взыскание',legal:'Гражданская ответственность'}}},
+
+// ─── ФЗ-152: Персональные данные ───────────────────
+{id:7,level:1,laws:['ФЗ-152'],topic:'pddata',roles:['all'],
+scenario:'Администратор вносит данные нового пациента в электронную систему клиники.',
+text:'К какой категории персональных данных относятся сведения о состоянии здоровья пациента?',
+options:['Общедоступные персональные данные','Биометрические персональные данные','Специальные категории персональных данных','Обычные персональные данные'],
+correct:2,
+expl:{ok:'Ст. 10 ФЗ-152: данные о состоянии здоровья — специальная категория ПДн. Требования к их обработке значительно строже.',
+wrong:'Ошибка: приравнивать медданные к "обычным" ФИО или адресу. Медицинские данные — высшая степень защиты по закону.',
+refs:[{law:'ФЗ-152',art:'10',text:'Специальные категории персональных данных'}],
+sub:['Постановление Правительства №1119: требования к защите ПДн'],
+practical:'Обработка специальных категорий требует явного письменного согласия + усиленных мер защиты. Случайная передача — серьёзное нарушение.',
+risks:{fine:'150 000–700 000 руб. (организация) по ст. 13.11 КоАП (ред. 30.05.2025); при утечке спецкатегорий — до 20 млн руб.',complaint:'Жалоба в Роскомнадзор',disciplinary:'Ответственность сотрудника и руководителя',legal:'При утечке — уголовная ответственность по ст. 272 УК РФ'}}},
+
+{id:8,level:2,laws:['ФЗ-152'],topic:'pddata',roles:['admin','doctor'],
+scenario:'Клиника хочет передать список пациентов (ФИО, диагноз, дата) фармацевтической компании для маркетингового исследования.',
+text:'На каком основании это можно сделать законно?',
+options:['На основании договора с фармкомпанией','Только с письменного согласия каждого пациента с указанием конкретной цели','Достаточно анонимизировать данные','На основании внутреннего приказа главного врача'],
+correct:1,
+expl:{ok:'Ст. 9 ФЗ-152: обработка и передача специальных категорий ПДн (медданные) третьим лицам — только с явного письменного согласия субъекта.',
+wrong:'Договор с третьим лицом не заменяет согласие пациента. Анонимизация должна быть настоящей — если можно идентифицировать, это всё ещё ПДн.',
+refs:[{law:'ФЗ-152',art:'9',text:'Согласие субъекта'},{law:'ФЗ-152',art:'10',text:'Специальные категории ПДн'}],
+sub:['Разъяснения Роскомнадзора №2023/45'],
+practical:'Маркетинговые исследования с медданными — зона повышенного риска. Каждый пациент должен подписать отдельное согласие именно на эту передачу.',
+risks:{fine:'300 000–700 000 руб. за передачу спецкатегорий без согласия (ст. 13.11 КоАП, ред. 30.05.2025); повторно — 1–3% годовой выручки',complaint:'Жалоба в РКН — проверка всей клиники',disciplinary:'',legal:'Уголовная ответственность руководителя'}}},
+
+// ─── ФЗ-326: ОМС ────────────────────────────────────
+{id:9,level:1,laws:['ФЗ-326'],topic:'oms',roles:['all'],
+scenario:'Пациент с полисом ОМС пришёл в клинику и просит провести МРТ по направлению врача.',
+text:'Вправе ли медицинская организация, работающая в системе ОМС, требовать доплату за услуги, включённые в программу ОМС?',
+options:['Да, если пациент согласен','Нет — услуги по программе ОМС оказываются бесплатно для застрахованного','Да, если клиника частная','Только за расходные материалы'],
+correct:1,
+expl:{ok:'Ст. 35 ФЗ-326: медицинская помощь по программе ОМС предоставляется бесплатно. Требование доплаты за включённые услуги — нарушение.',
+wrong:'Клиника получает оплату от ТФОМС, а не от пациента. "Согласие пациента" не делает доплату законной, если услуга включена в ОМС.',
+refs:[{law:'ФЗ-326',art:'35',text:'Базовая программа ОМС'},{law:'ФЗ-326',art:'16',text:'Права застрахованных лиц'}],
+sub:['Постановление Правительства о Программе госгарантий на 2026 год'],
+practical:'Если клиника берёт доплату — жалоба в ТФОМС. Частая схема нарушений: "у нас нет талонов по ОМС, но есть платное".',
+risks:{fine:'до 150 000 руб. по ст. 14.1.3 КоАП',complaint:'Жалоба в ТФОМС и Росздравнадзор',disciplinary:'',legal:'Приостановление деятельности клиники'}}},
+
+{id:10,level:2,laws:['ФЗ-323','ФЗ-326'],topic:'oms',roles:['admin','nurse'],
+scenario:'Скорая привезла мужчину без сознания. Документов нет. Дежурный администратор говорит: "Без полиса ОМС оформить не можем".',
+text:'Обязана ли медицинская организация оказать экстренную помощь пациенту без полиса ОМС?',
+options:['Нет — без полиса нет источника финансирования','Да — отказ в экстренной помощи запрещён независимо от наличия полиса','Да, но только государственные клиники','Только если пациент — гражданин РФ'],
+correct:1,
+expl:{ok:'Ст. 11 ФЗ-323 + ст. 35 ФЗ-326: экстренная помощь оказывается безотлагательно и бесплатно. Расходы компенсируются через ТФОМС.',
+wrong:'Финансирование — отдельный вопрос. Закон разделяет обязанность оказать помощь и вопрос её оплаты. Сначала — помощь, потом — документы.',
+refs:[{law:'ФЗ-323',art:'11',text:'Запрет отказа в медпомощи'},{law:'ФЗ-323',art:'32',text:'Экстренная форма помощи'},{law:'ФЗ-326',art:'35',text:'Оказание помощи'}],
+sub:['Письмо ФФОМС №1511/91-5/и от 2022: порядок компенсации расходов'],
+practical:'После оказания помощи клиника устанавливает страховую принадлежность и направляет счёт в ТФОМС. Деньги возмещаются.',
+risks:{fine:'',complaint:'',disciplinary:'',legal:'Ст. 124 УК РФ — неоказание помощи больному: до 4 лет л/с'}}},
+
+// ─── ТК РФ ───────────────────────────────────────────
+{id:11,level:1,laws:['ТК РФ'],topic:'labor',roles:['all'],
+scenario:'Медсестра Ольга имеет ребёнка 2 лет. Заведующий ставит её в ночные смены.',
+text:'Можно ли привлекать женщину с ребёнком до 3 лет к работе в ночное время?',
+options:['Да — медучреждения работают круглосуточно','Нет — это запрещено без исключений','Да, но только с её письменного согласия и без медицинских противопоказаний','Только если нет другого персонала'],
+correct:2,
+expl:{ok:'Ст. 259 ТК РФ: привлечение допускается только с письменного согласия сотрудницы и при отсутствии медицинских противопоказаний. Она должна быть ознакомлена с правом отказаться.',
+wrong:'Ни режим работы клиники, ни условия трудового договора не отменяют гарантию ст. 259 ТК РФ. Подпись в договоре ≠ согласие на ночную работу.',
+refs:[{law:'ТК РФ',art:'259',text:'Гарантии при направлении на ночную работу'},{law:'ТК РФ',art:'96',text:'Ночное время'}],
+sub:['Постановление Пленума ВС РФ №1 от 28.01.2014'],
+practical:'Для законного привлечения: 1) письменное согласие, 2) медзаключение, 3) ознакомление с правом отказа. Всё три — обязательно.',
+risks:{fine:'до 70 000 руб. (организация) ст. 5.27 КоАП',complaint:'Жалоба в Государственную инспекцию труда (ГИТ)',disciplinary:'Дисквалификация руководителя',legal:''}}},
+
+{id:12,level:2,laws:['ТК РФ'],topic:'labor',roles:['doctor','nurse'],
+scenario:'Врач разгласил диагноз пациента его работодателю по телефону без согласия пациента. Главный врач хочет уволить сотрудника.',
+text:'На каком основании закон позволяет уволить врача за разглашение врачебной тайны?',
+options:['Уволить нельзя — нет прямой нормы в ТК','Только после двух предупреждений','Пп. «в» п. 6 ч. 1 ст. 81 ТК РФ — разглашение охраняемой законом тайны','По соглашению сторон'],
+correct:2,
+expl:{ok:'Пп. «в» п. 6 ч. 1 ст. 81 ТК РФ: разглашение охраняемой законом тайны (врачебной — ст. 13 ФЗ-323) — основание для увольнения как однократное грубое нарушение.',
+wrong:'Ошибка: думать, что для увольнения нужна серия нарушений. Разглашение врачебной тайны — грубое однократное нарушение, не требует предварительных взысканий.',
+refs:[{law:'ТК РФ',art:'81, п.6, пп.в',text:'Увольнение за разглашение тайны'},{law:'ФЗ-323',art:'13',text:'Врачебная тайна как охраняемая тайна'},{law:'ТК РФ',art:'193',text:'Порядок применения взысканий'}],
+sub:[],practical:'До увольнения: запросить объяснительную (2 рабочих дня), зафиксировать нарушение актом. Клиника может также взыскать ущерб через регрессный иск.',
+risks:{fine:'до 50 000 руб. (клиника) по ст. 13.14 КоАП',complaint:'Иск пациента к клинике',disciplinary:'',legal:'Ст. 137 УК РФ — нарушение неприкосновенности частной жизни'}}},
+
+// ─── КРОСС-ЗАКОНЫ: Уровень 3 ──────────────────────
+{id:13,level:3,laws:['ФЗ-323','ФЗ-152'],topic:'cross',roles:['all'],
+scenario:'HR-менеджер завода звонит в регистратуру и просит подтвердить, что их сотрудник Петров лечится в клинике и сообщить диагноз — "для оформления документов по нетрудоспособности".',
+text:'Как должен поступить сотрудник регистратуры?',
+options:['Сообщить факт обращения — это помогает работодателю','Сообщить только дату посещения, без диагноза','Отказать полностью — и факт обращения, и диагноз охраняются как врачебная тайна и специальные ПДн','Перенаправить звонок лечащему врачу'],
+correct:2,
+expl:{ok:'Двойная защита: ст. 13 ФЗ-323 (врачебная тайна) + ст. 10 ФЗ-152 (специальные категории ПДн). Работодатель не входит в законный перечень получателей.',
+wrong:'Даже "только факт обращения" — нарушение. Перенаправление не снимает ответственности и не меняет правовую ситуацию.',
+refs:[{law:'ФЗ-323',art:'13, ч.1',text:'Состав врачебной тайны'},{law:'ФЗ-323',art:'13, ч.4',text:'Закрытый перечень оснований раскрытия'},{law:'ФЗ-152',art:'10',text:'Специальные категории ПДн'}],
+sub:['Разъяснения Роскомнадзора по обработке медицинских ПДн (2024)'],
+practical:'Единственное основание для передачи — письменное согласие самого Петрова с указанием конкретных сведений и получателя. Листок нетрудоспособности выдаётся напрямую пациенту.',
+risks:{fine:'150 000–700 000 руб. (ст. 13.11 КоАП, ред. 30.05.2025) + ст. 13.14 КоАП; при утечке — 3–5 млн руб.',complaint:'Жалоба в РКН и Росздравнадзор одновременно',disciplinary:'Увольнение сотрудника (пп. «в» п.6 ч.1 ст. 81 ТК)',legal:'Гражданский иск пациента о компенсации морального вреда'}}},
+
+{id:14,level:3,laws:['ФЗ-152','ФЗ-323'],topic:'cross',roles:['admin'],
+scenario:'Клиника переходит на цифровые медкарты. IT-директор предлагает хранить базу пациентов в Google Drive — "дёшево и надёжно".',
+text:'Что нарушает это решение с точки зрения законодательства РФ?',
+options:['Ничего — облако не запрещено','Только внутренний регламент клиники','ФЗ-152, ст. 18.1 — персональные данные граждан РФ должны храниться на серверах в РФ','ФЗ-323 запрещает любое электронное хранение данных'],
+correct:2,
+expl:{ok:'Ст. 18.1 ФЗ-152: при сборе ПДн граждан РФ оператор обязан обеспечить запись, хранение и обработку на территории РФ. Медданные — специальная категория.',
+wrong:'ФЗ-323 не запрещает электронные карты — наоборот, поощряет ЕГИСЗ. Но хранение ПДн за рубежом нарушает требование локализации ФЗ-152.',
+refs:[{law:'ФЗ-152',art:'18.1',text:'Локализация персональных данных'},{law:'ФЗ-152',art:'10',text:'Спецкатегории ПДн'},{law:'ФЗ-323',art:'97',text:'Медицинская документация'}],
+sub:['Приказ Минздрава №947н (ЕГИСЗ)','Требования ФСТЭК к защите информационных систем'],
+practical:'Допустимые российские облака: Яндекс.Облако (сертифицировано ФСТЭК), МТС Cloud, SberCloud. Google Drive, iCloud, Dropbox — нарушение.',
+risks:{fine:'300 000–700 000 руб. (организация) ст. 13.11 КоАП (ред. 30.05.2025); при нарушении локализации — до 6 млн руб. повторно',complaint:'Проверка Роскомнадзора, возможная блокировка',disciplinary:'Ответственность IT-директора и главного врача',legal:'Ст. 272 УК РФ при утечке данных'}}},
+
+{id:15,level:3,laws:['ТК РФ','ФЗ-323'],topic:'cross',roles:['nurse','doctor'],
+scenario:'Старшая медсестра Ольга, мама ребёнка 2,5 лет, отказалась от ночной смены. Заведующий говорит: "Ты подписала трудовой договор с ночным графиком — значит, согласна".',
+text:'Заменяет ли условие в трудовом договоре письменное согласие на ночную работу (по ст. 259 ТК РФ)?',
+options:['Да — договор подписан, согласие дано','Нет — требуется отдельное письменное согласие на каждый период или случай','Да, если договор подписан после 2020 года','Только если в договоре есть специальный пункт о ночных сменах'],
+correct:1,
+expl:{ok:'Ст. 259 ТК РФ требует отдельного письменного согласия, а не общего условия в договоре. Кроме того: сотрудница должна быть ознакомлена с правом отказаться.',
+wrong:'Трудовой договор фиксирует режим работы, но не заменяет специальную процедуру согласования ночной работы для защищённых категорий сотрудников.',
+refs:[{law:'ТК РФ',art:'259',text:'Гарантии при привлечении к ночной работе'},{law:'ТК РФ',art:'261',text:'Запрет увольнения женщин с детьми до 3 лет'}],
+sub:['Постановление Пленума ВС РФ №1 от 28.01.2014: трудовые споры'],
+practical:'3 обязательных шага: 1) отдельное письменное согласие, 2) медзаключение, 3) ознакомление под подпись с правом отказаться. Угроза увольнением — повод для жалобы.',
+risks:{fine:'до 70 000 руб. (организация) ст. 5.27 КоАП',complaint:'Жалоба в ГИТ — внеплановая проверка за 30 дней',disciplinary:'Дисквалификация руководителя при повторном нарушении',legal:'Восстановление на работе + компенсация'}}},
+
+// ─── Уровень 4: Эксперт ──────────────────────────────
+{id:16,level:4,laws:['ФЗ-323','ФЗ-152','ТК РФ'],topic:'expert',roles:['admin','doctor'],
+scenario:'Врач скопировал медкарты 50 пациентов на личную флешку — "для удобства работы из дома". Об этом узнал главный врач. Один пациент пожаловался, что его данные оказались у третьих лиц.',
+text:'Какова совокупность правовых последствий этой ситуации?',
+options:['Только выговор врачу — данные не передавались намеренно','Административная ответственность клиники + дисциплинарная врача','Только уголовная ответственность врача','Комплексная ответственность: административная (клиника), дисциплинарная и потенциально уголовная (врач), гражданская (иск пациента к клинике)'],
+correct:3,
+expl:{ok:'Это типичный случай мультиправовой ответственности: нарушены ФЗ-152 (утечка ПДн), ФЗ-323 (врачебная тайна), ТК РФ (дисциплина). Каждый закон генерирует свой вид ответственности.',
+wrong:'Нельзя смотреть только на один закон. Реальные инциденты почти всегда затрагивают несколько правовых норм одновременно — и наказание кратное.',
+refs:[{law:'ФЗ-152',art:'13.11 КоАП',text:'Нарушение обработки ПДн'},{law:'ФЗ-323',art:'13',text:'Врачебная тайна'},{law:'ТК РФ',art:'81, п.6, пп.в',text:'Увольнение за разглашение'},{law:'УК РФ',art:'272',text:'Неправомерный доступ к компьютерной информации'}],
+sub:['Постановление Правительства №1119: технические меры защиты ПДн'],
+practical:'Клиника: административный штраф + проверка РКН + компенсация пациенту. Врач: увольнение + потенциально уголовное дело. Репутационный ущерб клинике.',
+risks:{fine:'Клиника: 150 000–700 000 руб. (ст. 13.11 КоАП, ред. 30.05.2025); при утечке спецкатегорий — до 20 млн руб.',complaint:'РКН + Росздравнадзор + прокуратура',disciplinary:'Увольнение врача',legal:'Ст. 272 УК РФ (до 4 лет) + гражданский иск пациента'}}},
+
+{id:17,level:4,laws:['ФЗ-323','ФЗ-326'],topic:'expert',roles:['admin'],
+scenario:'Страховая компания ОМС отказала в оплате счёта клиники за лечение пациента, сославшись на "нецелевое расходование средств". Клиника провела лечение строго по стандарту.',
+text:'Вправе ли страховая медицинская организация в системе ОМС немотивированно отказать в оплате оказанной медицинской помощи?',
+options:['Да — страховая оценивает качество самостоятельно','Да, если клиника не уложилась в тариф','Нет — отказ или уменьшение оплаты допускается только по основаниям, предусмотренным законом и договором','Нет, но только для государственных клиник'],
+correct:2,
+expl:{ok:'Ст. 41 ФЗ-326: основания для отказа в оплате или уменьшения оплаты — исчерпывающий перечень. Немотивированный отказ незаконен.',
+wrong:'Страховая — не хозяин денег ОМС. Это публичные средства. Отказ должен быть мотивирован конкретной нормой из закона или договора.',
+refs:[{law:'ФЗ-326',art:'41',text:'Основания для отказа в оплате'},{law:'ФЗ-326',art:'40',text:'Контроль объёмов и качества помощи'}],
+sub:['Приказ ФФОМС №130н: проведение медико-экономической экспертизы','Приказ ФФОМС №36н: экспертиза качества медицинской помощи'],
+practical:'Порядок обжалования: 1) претензия в страховую, 2) жалоба в ТФОМС, 3) арбитражный суд. Клиника вправе восстановить оплату в судебном порядке.',
+risks:{fine:'',complaint:'Жалоба клиники в ТФОМС на действия СМО',disciplinary:'',legal:'Арбитражный спор — клиника vs страховая'}}},
+
+// Дополнительные вопросы уровень 1-2
+{id:18,level:1,laws:['ФЗ-323'],topic:'emergency',roles:['all'],
+scenario:'Врач приёмного покоя оформляет документы, пока скорая ждёт с критическим пациентом.',
+text:'В какой форме должна оказываться медицинская помощь при состояниях, угрожающих жизни?',
+options:['Плановой — по записи','Неотложной — в течение 2 часов','Экстренной — безотлагательно','Зависит от типа заболевания'],
+correct:2,
+expl:{ok:'Ст. 32 ФЗ-323: экстренная форма — при внезапных острых состояниях, угрозе жизни. Оказывается безотлагательно.',
+wrong:'Плановая и неотложная — другие формы. При угрозе жизни промедление не допускается и может квалифицироваться как оставление в опасности.',
+refs:[{law:'ФЗ-323',art:'32',text:'Формы оказания медицинской помощи'}],
+sub:[],practical:'Три формы: экстренная (угроза жизни, немедленно), неотложная (без угрозы жизни, но срочно), плановая (по записи).',
+risks:{fine:'',complaint:'',disciplinary:'',legal:'Ст. 124 УК РФ при промедлении'}}},
+
+{id:19,level:2,laws:['ФЗ-323','ТК РФ'],topic:'cross',roles:['doctor','nurse'],
+scenario:'Медсестра отказывается выполнять назначение врача, считая его опасным. Врач настаивает.',
+text:'Вправе ли медицинская сестра отказаться выполнять назначение, которое, по её мнению, противоречит интересам пациента?',
+options:['Нет — она обязана выполнять все указания врача','Да — медсестра несёт самостоятельную профессиональную ответственность за свои действия','Только если есть письменный приказ главного врача','Только в присутствии заведующего'],
+correct:1,
+expl:{ok:'Медработник несёт личную профессиональную ответственность за свои действия. Ст. 98 ФЗ-323 + профстандарт медсестры: право отказаться от выполнения действий, угрожающих пациенту.',
+wrong:'Принцип "я просто выполняла приказ" не работает в медицине. Если медсестра выполнила опасное назначение — она тоже несёт ответственность.',
+refs:[{law:'ФЗ-323',art:'98',text:'Ответственность медицинских работников'},{law:'ТК РФ',art:'379',text:'Формы самозащиты трудовых прав'}],
+sub:['Профессиональный стандарт "Медицинская сестра/брат" (Приказ Минтруда №989н)'],
+practical:'Алгоритм: отказаться устно, зафиксировать письменно, сообщить заведующему. Это защита и пациента, и самой медсестры.',
+risks:{fine:'',complaint:'',disciplinary:'Взыскание при неправомерном отказе',legal:'Ответственность при исполнении опасного назначения'}}},
+
+{id:20,level:2,laws:['ФЗ-152'],topic:'pddata',roles:['admin'],
+scenario:'Пациент требует удалить все свои данные из системы клиники после завершения лечения.',
+text:'Обязана ли медицинская организация удалить персональные данные пациента по его требованию?',
+options:['Да — немедленно, это право субъекта','Нет — медданные хранятся по установленным срокам, которые не зависят от желания пациента','Да, но только данные о диагнозе','Только если пациент подаст в суд'],
+correct:1,
+expl:{ok:'Медицинская документация хранится по срокам, установленным Минздравом (Приказ №19н). Это исключение из общего права на удаление ПДн по ст. 21 ФЗ-152.',
+wrong:'Общее право субъекта на удаление ПДн (ст. 21 ФЗ-152) имеет исключения — когда обработка обязательна по закону. Хранение медкарт — именно такой случай.',
+refs:[{law:'ФЗ-152',art:'21',text:'Право на удаление ПДн и его исключения'},{law:'ФЗ-323',art:'97',text:'Хранение медицинской документации'}],
+sub:['Приказ Минздрава №19н: сроки хранения медицинской документации'],
+practical:'Типичные сроки: история болезни — 25 лет, карта стационара — 25 лет, рентгенограммы — 5 лет. Удалить раньше срока — нарушение.',
+risks:{fine:'',complaint:'Жалоба в РКН, но клиника права',disciplinary:'',legal:''}}},
+
+// ─── НОВОЕ: ФЗ-323 изменения 2026 ─────────────────────
+{id:21,level:2,laws:['ФЗ-323'],topic:'education',roles:['doctor','student','admin'],
+scenario:'С 1 марта 2026 года (ФЗ-424 от 17.11.2025) изменились правила допуска к работе для выпускников медицинских вузов. Молодой врач только что прошёл первичную аккредитацию и спрашивает: "Могу ли я сразу работать самостоятельно?"',
+text:'Что обязан пройти выпускник медицинского вуза, впервые прошедший первичную аккредитацию после 1 марта 2026 года, прежде чем получить право на самостоятельную работу?',
+options:['Ничего — первичная аккредитация уже даёт полное право работать','Обязательный период работы под руководством наставника — до 3 лет в зависимости от специальности','Повторную аккредитацию через год','Стажировку только в государственной клинике по направлению Минздрава'],
+correct:1,
+expl:{ok:'Ст. 69 ФЗ-323 (ред. ФЗ-424 от 17.11.2025, с 01.03.2026): все выпускники, прошедшие первичную аккредитацию после 1 марта 2026, обязаны пройти период наставничества. Срок — до 3 лет по перечню Минздрава. Без наставничества нельзя пройти периодическую аккредитацию.',
+wrong:'С 1 марта 2026 первичная аккредитация — лишь первый шаг. Специалист работает под руководством наставника (стаж ≥5 лет). Целевики проходят наставничество у своего заказчика обучения.',
+refs:[{law:'ФЗ-323',art:'69',text:'Право на осуществление медицинской деятельности (ред. с 01.03.2026)'},{law:'ФЗ-424',art:'1',text:'Изменения в ФЗ-323 от 17.11.2025'}],
+sub:['ФЗ-424 от 17.11.2025 «О внесении изменений в ФЗ-323»'],
+practical:'Для руководителей: разработать локальный акт о наставничестве, назначить наставника (стаж ≥5 лет, только с письменного согласия), отразить функцию в трудовом договоре или доп. соглашении. Вести учёт прохождения периода наставничества.',
+risks:{fine:'Двукратный размер расходов на обучение за нарушение договора о целевом обучении в ординатуре',complaint:'Жалоба в Минздрав, Рособрнадзор при отсутствии системы наставничества',disciplinary:'Специалист без наставничества не допускается к периодической аккредитации',legal:''}}},
+
+{id:22,level:3,laws:['ФЗ-323'],topic:'nmits',roles:['admin','doctor'],
+scenario:'С 1 апреля 2026 года в ФЗ-323 появилась новая статья 79². Главный врач спрашивает юриста: "Что такое НМИЦ и как это влияет на нашу клинику?"',
+text:'Что такое НМИЦ по ФЗ-515 от 28.12.2025 (ст. 79² ФЗ-323, с 01.04.2026)?',
+options:['Национальные медицинские информационные центры — архивы медкарт','Национальные медицинские исследовательские центры — организации, координирующие медпомощь по профилю на федеральном уровне','Новый орган надзора, заменяющий Росздравнадзор','Сертификационные центры для врачей'],
+correct:1,
+expl:{ok:'ФЗ-515 от 28.12.2025 (вступил в силу 01.04.2026): ст. 79² ФЗ-323 закрепляет статус НМИЦ — Национальных медицинских исследовательских центров. Они координируют медпомощь по профилям, разрабатывают клинрекомендации и проводят оценку качества.',
+wrong:'НМИЦ — не надзорный орган и не архив. Это методологические центры, от которых зависят клинические рекомендации, стандарты и маршрутизация пациентов.',
+refs:[{law:'ФЗ-323',art:'79²',text:'НМИЦ (введена ФЗ-515 от 28.12.2025, с 01.04.2026)'},{law:'ФЗ-323',art:'14',text:'Организация медпомощи (изм. 01.04.2026)'},{law:'ФЗ-323',art:'16',text:'Полномочия федеральных органов (изм. 01.04.2026)'}],
+sub:['ФЗ-515 от 28.12.2025 «О внесении изменений в ФЗ-323»'],
+practical:'Практически для клиник: НМИЦ вашего профиля — источник актуальных клинических рекомендаций. Несоответствие клинрекомендациям НМИЦ может стать основанием для претензий страховой.',
+risks:{fine:'',complaint:'Несоответствие стандартам НМИЦ → претензии СМО при проверке',disciplinary:'Ответственность за отступление от клинических рекомендаций',legal:''}}},
+
+// ─── ФЗ-323 изменения: сентябрь 2025 ──────────────────
+{id:23,level:2,laws:['ФЗ-323'],topic:'bads',roles:['doctor','nurse','admin'],
+scenario:'Врач-терапевт рекомендует пациенту с дефицитом витамина D принимать определённый БАД. Коллега говорит: "Нельзя — это не лекарство, а назначать ты его не имеешь права".',
+text:'Вправе ли врач назначить пациенту биологически активную добавку (БАД) при наличии медицинских показаний?',
+options:['Нет — врачи назначают только зарегистрированные лекарственные препараты','Да — с 1 сентября 2025 года (ФЗ-150) медработники вправе назначать БАДы при медицинских показаниях','Только если БАД включён в стандарт медицинской помощи','Только в частных клиниках, без ОМС'],
+correct:1,
+expl:{ok:'Ст. 37, ч. 17 ФЗ-323 (введена ФЗ-150 от 07.06.2025, с 01.09.2025): медицинские работники вправе назначать БАДы при наличии медицинских показаний. Порядок назначения утверждён Приказом Минздрава №669н от 17.11.2025 (действует с 01.03.2026).',
+wrong:'До сентября 2025 назначение БАДов было в правовой "серой зоне". Теперь это прямо разрешено законом. Но важно: запрет на получение вознаграждения от производителей (ст. 74 ФЗ-323) распространяется и на БАДы.',
+refs:[{law:'ФЗ-323',art:'37, ч.17',text:'Право назначать БАДы (с 01.09.2025)'},{law:'ФЗ-323',art:'74',text:'Ограничения для медработников при взаимодействии с производителями'}],
+sub:['ФЗ-150 от 07.06.2025','Приказ Минздрава №669н от 17.11.2025 (с 01.03.2026): порядок назначения БАДов'],
+practical:'Врач назначает БАД в медицинской документации с указанием показания. Нельзя получать вознаграждение от производителя или продавца БАДа — это нарушение ст. 74 ФЗ-323 с риском дисциплинарной ответственности.',
+risks:{fine:'',complaint:'Жалоба в Росздравнадзор при получении вознаграждения от производителя',disciplinary:'Дисциплинарное взыскание за нарушение ограничений ст. 74',legal:''}}},
+
+// ─── ФЗ-323: Федеральный регистр (март 2026) ──────────
+{id:24,level:2,laws:['ФЗ-323','ФЗ-152'],topic:'registry',roles:['admin','doctor'],
+scenario:'С 1 марта 2026 года клиника обязана работать с федеральным регистром лиц с отдельными заболеваниями (ст. 91.1 ФЗ-323). Администратор не знает, нужно ли что-то брать с пациента перед внесением его данных.',
+text:'Что обязана сделать медицинская (или фармацевтическая) организация перед внесением данных пациента в федеральный регистр лиц с отдельными заболеваниями?',
+options:['Ничего — данные вносятся автоматически при постановке диагноза','Получить письменное согласие пациента, включающее сведения о назначенных препаратах и период рецепта','Уведомить Росздравнадзор об открытии регистровой записи','Согласие не нужно — регистр ведётся в государственных интересах'],
+correct:1,
+expl:{ok:'Ст. 91.1 ФЗ-323 (ред. ФЗ-304 от 31.07.2025, с 01.03.2026): перед внесением в федеральный регистр организация обязана взять у пациента согласие. Согласие должно содержать информацию о назначенных по рецепту лекарствах, медизделиях, лечебном питании и период действия рецепта.',
+wrong:'Наличие диагноза само по себе не даёт автоматического права на внесение в регистр. Требуется именно согласие с конкретным содержанием — это новое требование с 1 марта 2026.',
+refs:[{law:'ФЗ-323',art:'91.1',text:'Федеральный регистр лиц с отдельными заболеваниями (ред. с 01.03.2026)'},{law:'ФЗ-152',art:'9',text:'Согласие субъекта персональных данных'}],
+sub:['ФЗ-304 от 31.07.2025 «О внесении изменений в ФЗ-323»'],
+practical:'Согласие включает: назначенные рецептурные препараты, медицинские изделия, лечебное питание + период действия рецепта. Данные регистра защищаются по аналогии с персональными данными. Форма согласия в законе не закреплена — клиника разрабатывает сама.',
+risks:{fine:'Нарушение порядка обработки ПДн (ст. 13.11 КоАП)',complaint:'Жалоба в Роскомнадзор и Росздравнадзор',disciplinary:'Ответственность администратора и главного врача',legal:''}}},
+
+// ─── Ст. 27 ч.2 ФЗ-323 — Обязанности в стационаре ───
+{id:25,level:2,laws:['ФЗ-323'],topic:'duty27',roles:['all'],
+scenario:'Ночью пациент в хирургическом отделении шумит, матерится, мешает соседям, отказывается соблюдать постельный режим. При этом он заявляет: «По статье 27 вы обязаны меня лечить так, как Я хочу, а я хочу другой препарат — не тот, что вы назначили».',
+text:'Что правильно и что ошибочно в этой ситуации с точки зрения ст. 27 ФЗ-323?',
+options:[
+'Пациент прав: ст. 27 даёт ему право требовать любое лечение по своему выбору',
+'Ст. 27 ч. 2 обязывает пациента соблюдать режим лечения и правила поведения в медорганизации — ночной шум и мат это нарушение; но отказ от конкретного препарата — это не ст. 27, а право пациента по ст. 20 (информированное согласие)',
+'Ст. 27 не распространяется на поведение пациента — только на обязанность проходить обследования',
+'Врач вправе принудительно ввести назначенный препарат, раз пациент нарушает ст. 27'
+],
+correct:1,
+expl:{ok:'Ст. 27 ч. 2 ФЗ-323 устанавливает ДВЕ обязанности: 1) соблюдать режим лечения (постельный режим, диету, приём назначенных препаратов в рамках данного согласия); 2) соблюдать правила поведения пациента в медорганизации (тишина, уважение к персоналу и соседям). Ночной шум и мат — прямое нарушение. НО: отказ от конкретного метода лечения — это совершенно другое. Это право пациента по ст. 19 и ст. 20 ФЗ-323. Ст. 27 не может быть использована для принуждения к согласию на лечение.',
+wrong:'Распространённая ошибка: врачи ссылаются на ст. 27 как на основание для давления на пациента, который отказывается от конкретного препарата или процедуры. Это неправомерно. Отказ от лечения оформляется по ст. 20 — письменным отказом. Врач информирует о последствиях и фиксирует. Принудительное введение препарата без согласия — уголовно наказуемо (ст. 111 или 112 УК РФ).',
+refs:[{law:'ФЗ-323',art:'27, ч.2',text:'Обязанности пациентов: режим лечения и правила поведения'},{law:'ФЗ-323',art:'19',text:'Право пациента на отказ от медицинского вмешательства'},{law:'ФЗ-323',art:'20',text:'Информированное добровольное согласие — и право отказаться'}],
+sub:['Определение КС РФ №175-О: принуждение к лечению недопустимо даже при наличии медицинских показаний (кроме случаев, прямо предусмотренных законом)'],
+practical:'Если пациент нарушает режим отделения: зафиксировать нарушение в медкарте, сделать предупреждение письменно, при повторных нарушениях — составить акт с подписями свидетелей, ходатайствовать о досрочной выписке (если нет угрозы жизни). Если пациент отказывается от лечения — оформить отказ по ст. 20, разъяснить последствия, не давить.',
+risks:{fine:'',complaint:'Жалоба пациента в Росздравнадзор при попытке принудить к лечению',disciplinary:'Дисциплинарное взыскание за давление на пациента',legal:'Принудительное введение препарата без согласия — ст. 111-112 УК РФ'}}},
+
+// ─── Ст. 70 ФЗ-323 — Лечащий врач ───────────────────
+{id:26,level:2,laws:['ФЗ-323'],topic:'attending',roles:['doctor','nurse'],
+scenario:'Врач-хирург заявляет: «Этот пациент грубит и не соблюдает назначения — я отказываюсь его вести». Главный врач уточняет: а на каком основании по закону врач вообще вправе отказаться?',
+text:'В каком случае лечащий врач вправе отказаться от наблюдения пациента согласно ст. 70 ч. 3 ФЗ-323?',
+options:[
+'В любом случае — достаточно личного несогласия врача с поведением пациента',
+'Только если пациент письменно оскорбил врача и это зафиксировано',
+'Основания — недостаточная квалификация врача для данного случая или этические соображения; обязательно через руководителя и только при условии полноценной замены пациенту',
+'Врач не вправе отказываться от пациента ни при каких обстоятельствах'
+],
+correct:2,
+expl:{ok:'Ст. 70 ч. 3 ФЗ-323: отказ врача от ведения пациента допускается в двух случаях — недостаточная квалификация для данной ситуации или этические соображения (например, отказ от участия в прерывании беременности по моральным убеждениям). Обязательные условия: согласование с руководителем медорганизации + пациенту обеспечивается полноценная замена + отказ не угрожает жизни пациента.',
+wrong:'Грубость пациента, конфликтность, несоблюдение назначений — это НЕ основания для отказа по ст. 70. Врач обязан работать с таким пациентом, фиксировать нарушения режима по ст. 27 ч. 2 и при необходимости ходатайствовать о смене через руководителя по другим основаниям. Самовольный отказ без законного основания — дисциплинарная ответственность.',
+refs:[{law:'ФЗ-323',art:'70, ч.3',text:'Право лечащего врача на отказ от ведения пациента и его ограничения'}],
+sub:['Позиция Росздравнадзора: «не хочу» — не является законным основанием для отказа от пациента'],
+practical:'Если врач не обладает нужной квалификацией: честно сообщить руководителю → направить к специалисту → оформить передачу. Если этические соображения (аборт, эвтаназия и т.д.): письменное уведомление руководителя → замена обеспечена до отказа. Пациент не должен остаться без врача ни на минуту.',
+risks:{fine:'',complaint:'Жалоба в Росздравнадзор при отказе без законного основания',disciplinary:'Дисциплинарное взыскание вплоть до увольнения',legal:'При наступлении вреда здоровью — ст. 124 УК РФ (неоказание помощи)'}}},
+
+// ─── Ст. 71 ФЗ-323 — Клятва врача ────────────────────
+{id:27,level:2,laws:['ФЗ-323'],topic:'oath',roles:['doctor','student'],
+scenario:'Студент 6-го курса медвуза перед вручением диплома спрашивает куратора: «Клятва врача — это просто красивая традиция или у неё есть юридическая сила?»',
+text:'Что установлено статьёй 71 ФЗ-323 о клятве врача?',
+options:['Клятва носит исключительно торжественный характер — правовых последствий не имеет','Клятву дают при поступлении в вуз; нарушение — основание для отчисления','Клятву дают при получении диплома врача; нарушение влечёт ответственность, предусмотренную законодательством РФ','Клятву дают при первичной аккредитации; нарушение фиксируется в ФРМР'],
+correct:2,
+expl:{ok:'Ст. 71 ФЗ-323: лица, получившие диплом врача, дают клятву врача. Текст клятвы закреплён в законе. Нарушение принципов клятвы влечёт ответственность по законодательству РФ — от дисциплинарной до уголовной. Клятва — не символ, а юридически значимый акт.',
+wrong:'В судебной практике клятва врача используется при рассмотрении дел о врачебных ошибках и профессиональных нарушениях. Именно с клятвы начинается понятие «профессиональный долг врача» в российском праве.',
+refs:[{law:'ФЗ-323',art:'71',text:'Клятва врача'}],
+sub:['Текст клятвы врача закреплён в ст. 71 ФЗ-323 — выучи наизусть'],
+practical:'Клятва врача включает: соблюдать врачебную тайну, не причинять вреда, уважать пациента, постоянно совершенствоваться, быть готовым оказать помощь. Нарушение этих принципов — аргумент обвинения в делах о причинении вреда здоровью.',
+risks:{fine:'',complaint:'',disciplinary:'Дисциплинарное взыскание, лишение квалификационной категории',legal:'Нарушение принципов клятвы как отягчающее обстоятельство при уголовном преследовании'}}},
+
+// ─── ФЗ-125 — Донорство крови ─────────────────────────
+{id:28,level:1,laws:['ФЗ-125','ТК РФ'],topic:'donation',roles:['all'],
+scenario:'Медсестра запланировала сдать кровь в пятницу. Старшая медсестра говорит: «Ты обязана выйти на работу — у нас не хватает персонала». ',
+text:'Какие трудовые гарантии предоставляются работнику-донору крови по ФЗ-125 и ст. 186 ТК РФ?',
+options:['Только денежная компенсация питания в день сдачи крови','Освобождение от работы в день сдачи + дополнительный день отдыха; работодатель не вправе отказать','3 дня дополнительного отпуска ежегодно плюс бесплатное питание','Работодатель сам решает — закон рекомендательный'],
+correct:1,
+expl:{ok:'Ст. 186 ТК РФ + ст. 22 ФЗ-125: в день сдачи крови работник освобождается от работы. После каждой сдачи предоставляется дополнительный день отдыха — его можно присоединить к ежегодному отпуску или использовать в течение года. Работодатель обязан — отказ незаконен.',
+wrong:'Если работник вышел на работу в день сдачи крови по собственной инициативе — дополнительный день отдыха он всё равно сохраняет. Замена отдыха деньгами по инициативе работодателя не допускается. Почётный донор — отдельный статус с льготами.',
+refs:[{law:'ТК РФ',art:'186',text:'Гарантии и компенсации работникам в случае сдачи ими крови'},{law:'ФЗ-125',art:'22',text:'Меры социальной поддержки доноров крови'}],
+sub:['ФЗ-125 от 20.07.2012 «О донорстве крови и её компонентов»'],
+practical:'Донор обязан предупредить работодателя заранее и предъявить справку из учреждения, где сдавал кровь (форма 402/у). При нарушении работодателем — жалоба в ГИТ. Сотрудники медорганизаций нередко являются донорами — знать свои права обязательно.',
+risks:{fine:'Административный штраф работодателя за нарушение ТК — до 50 000 руб. (ст. 5.27 КоАП)',complaint:'Жалоба в Государственную инспекцию труда',disciplinary:'',legal:''}}},
+
+// ─── Ст. 47 ФЗ-323 — Органное донорство ──────────────
+{id:29,level:3,laws:['ФЗ-323','Закон о транспл.'],topic:'organdonation',roles:['doctor','admin'],
+scenario:'Пациент погиб в реанимации. Семья узнала, что врачи планируют взять органы для трансплантации. Вдова кричит: «Он не давал согласия! Я запрещаю!»',
+text:'Как действует принцип презумпции согласия на посмертное изъятие органов в России?',
+options:['Без письменного согласия самого пациента изъятие органов абсолютно запрещено','Каждый считается согласным на изъятие органов после смерти; мнение родственников значения не имеет','Изъятие допускается, если умерший при жизни не заявил об отказе; однако если близкие родственники при известии о смерти заявляют несогласие — изъятие недопустимо','Согласие нужно только при трупной трансплантации, при донорстве от живого донора — не нужно'],
+correct:2,
+expl:{ok:'Ст. 8 Закона РФ «О трансплантации органов»: в России действует презумпция согласия. Однако изъятие не допускается, если клиника поставлена в известность о том, что при жизни умерший либо его близкие родственники заявили о несогласии. Слово вдовы или родителей — юридически значимо.',
+wrong:'Это один из самых острых правовых вопросов. Ни «согласие по умолчанию без ограничений», ни «обязательное явное согласие» — оба ответа ошибочны. Закон устанавливает баланс: презумпция согласия + право родственников на несогласие.',
+refs:[{law:'Закон о транспл.',art:'8',text:'Презумпция согласия на изъятие органов (Закон РФ №4180-1)'},{law:'ФЗ-323',art:'47',text:'Изъятие органов и тканей для трансплантации'}],
+sub:['Закон РФ от 22.12.1992 №4180-1 «О трансплантации органов и (или) тканей человека»'],
+practical:'Практически: при поступлении сигнала от родственников о несогласии — немедленно фиксировать документально и не приступать к изъятию. Вопрос крайне чувствительный: решение принимается только с участием юриста клиники и руководства.',
+risks:{fine:'',complaint:'Жалоба в прокуратуру и Следственный комитет',disciplinary:'',legal:'Уголовная ответственность по ст. 120 УК РФ (принуждение к изъятию органов)'}}},
+
+// ─── ФЗ-52 — Принудительная изоляция ─────────────────
+{id:30,level:2,laws:['ФЗ-52','ФЗ-323'],topic:'infection',roles:['all'],
+scenario:'Участковый врач выявил пациента с подозрением на менингококковую инфекцию. Пациент категорически отказывается ехать в инфекционную больницу и требует лечения на дому.',
+text:'Что разрешает законодательство при отказе пациента с опасной инфекцией от госпитализации (ст. 33 ФЗ-52)?',
+options:['Только составить акт об отказе и лечить амбулаторно','Принудительно госпитализировать без решения суда — жизнь пациента важнее формальностей','Обратиться в суд для принудительной госпитализации и изоляции в целях защиты окружающих','Вызвать скорую — бригада вправе принудительно удерживать пациента'],
+correct:2,
+expl:{ok:'Ст. 33 ФЗ-52 «О санитарно-эпидемиологическом благополучии населения»: больные инфекционными заболеваниями, опасными для окружающих, могут быть госпитализированы принудительно — но только по решению суда. Ст. 27 ФЗ-323 устанавливает обязанность таких граждан проходить лечение.',
+wrong:'Никто — ни скорая, ни врач, ни полиция — не вправе принудительно удерживать пациента без судебного решения. Это незаконное лишение свободы. Алгоритм: уведомить главного санитарного врача района → тот обращается в суд → суд выносит решение.',
+refs:[{law:'ФЗ-52',art:'33',text:'Обязательная госпитализация при инфекционных заболеваниях'},{law:'ФЗ-323',art:'27',text:'Обязанности граждан при опасных заболеваниях'}],
+sub:['ФЗ-52 от 30.03.1999 «О санитарно-эпидемиологическом благополучии населения»'],
+practical:'При отказе: немедленно уведомить главного санитарного врача района (не только главврача клиники). Вести хронологию контактов пациента — нужна для эпидрасследования. Контактных лиц — поставить на учёт и информировать о необходимости обследования.',
+risks:{fine:'Административная ответственность пациента по ст. 6.3 КоАП',complaint:'Жалоба в Роспотребнадзор при нарушении порядка уведомления',disciplinary:'Ответственность медперсонала за промедление с сообщением в санэпидслужбу',legal:''}}},
+
+// ─── ФЗ-53 — Военно-врачебная экспертиза ─────────────
+{id:31,level:2,laws:['ФЗ-53','ФЗ-323'],topic:'military',roles:['doctor','admin'],
+scenario:'На приём к терапевту пришёл молодой человек призывного возраста с хроническим заболеванием. Он спрашивает: «Кто решает, годен ли я к военной службе, и по какому принципу?»',
+text:'Кто определяет степень годности к военной службе и на основании чего выносится заключение?',
+options:['Лечащий врач поликлиники по результатам диспансеризации','Военный комиссар на основании медицинских документов из карты','Военно-врачебная комиссия (ВВК) на основании Расписания болезней — приложения к Положению о военно-врачебной экспертизе','Любая медорганизация с лицензией по приказу Минздрава'],
+correct:2,
+expl:{ok:'Положение о военно-врачебной экспертизе (Постановление Правительства №565): годность к военной службе определяет ВВК. Решение основано на Расписании болезней — перечне с категориями: А (годен), Б (годен с ограничениями), В (ограниченно годен, запас), Г (временно не годен), Д (не годен). Клиника даёт документы, ВВК — заключение.',
+wrong:'Лечащий врач и военный комиссар участвуют в процессе, но не принимают решение о годности. ВВК — коллегиальный орган специалистов. Её заключение можно обжаловать в вышестоящей ВВК или в суде.',
+refs:[{law:'ФЗ-53',art:'5.1',text:'Военно-врачебная экспертиза'},{law:'ФЗ-323',art:'58',text:'Военно-врачебная экспертиза'}],
+sub:['Постановление Правительства РФ №565 «Положение о военно-врачебной экспертизе»','Расписание болезней — Приложение к ПП №565'],
+practical:'Для врача поликлиники: при направлении документов на ВВК — полная и точная документация всех диагнозов, обследований и лечения. Неполные документы → ВВК назначает дообследование. Подделка медицинских документов для уклонения от призыва — уголовная ответственность (ст. 327 УК РФ).',
+risks:{fine:'',complaint:'',disciplinary:'',legal:'Подделка медицинских документов — ст. 327 УК РФ (до 2 лет лишения свободы)'}}},
+
+// ─── Ст. 27 × Ст. 70 — Связка обязанностей ───────────
+{id:32,level:3,laws:['ФЗ-323'],topic:'cross',roles:['doctor','nurse'],
+scenario:'Пациент с сахарным диабетом 2-го типа систематически нарушает диету и режим инсулинотерапии. Врач устал и говорит: «Буду ссылаться на ст. 70 — откажусь от этого пациента». Заведующий отделением уточняет: а есть ли законное основание?',
+text:'Может ли врач отказаться от ведения пациента по ст. 70 ФЗ-323, если тот систематически нарушает режим и назначения?',
+options:[
+'Да — несоблюдение режима нарушает ст. 27, поэтому врач вправе отказаться с согласия руководителя',
+'Нет — несоблюдение режима пациентом не является законным основанием для отказа врача по ст. 70; основания только два: недостаточная квалификация или этические соображения',
+'Да — врач вправе отказаться немедленно, без согласований, раз пациент нарушает закон',
+'Нет — врач не вправе отказываться вообще ни при каких обстоятельствах'
+],
+correct:1,
+expl:{ok:'Ст. 70 ч. 3 ФЗ-323 даёт врачу право на отказ только по двум основаниям: 1) недостаточная квалификация для данного случая; 2) этические соображения. Несоблюдение пациентом режима — не входит в этот перечень. Пациент нарушает ст. 27 ч. 2, но это не даёт врачу автоматического права на отказ от ведения. Врач обязан продолжать работу и документировать нарушения.',
+wrong:'Распространённое заблуждение: «пациент сам виноват — значит, могу отказаться». Закон так не работает. Ст. 70 — исчерпывающий перечень оснований. Фиксируй нарушения в медкарте, оформляй предупреждения письменно — это защита врача при неблагоприятном исходе. Если пациент умрёт от осложнений, а врач бросил его без законного основания — ст. 124 УК РФ.',
+refs:[{law:'ФЗ-323',art:'70, ч.3',text:'Исчерпывающие основания для отказа врача от ведения пациента'},{law:'ФЗ-323',art:'27, ч.2',text:'Обязанность пациента соблюдать режим — но не основание для отказа врача'}],
+sub:['Позиция Росздравнадзора: грубость и несоблюдение назначений пациентом не дают врачу права на отказ по ст. 70'],
+practical:'Правильный алгоритм при систематическом нарушении режима: 1) каждое нарушение — запись в медкарте с датой; 2) письменное предупреждение пациенту под подпись; 3) при необходимости — врачебная комиссия; 4) если пациент создаёт реальную угрозу другим — ходатайство руководителю о принятии мер. Это юридическая защита врача.',
+risks:{fine:'',complaint:'Жалоба пациента — грамотная документация нарушений усиливает позицию клиники',disciplinary:'Самовольный отказ от пациента без законного основания — дисциплинарная ответственность',legal:'Бросить пациента без законного основания + наступление вреда = ст. 124 УК РФ'}}}
+];
+
+// ══════════════════════════════════════════════════════
+// STATE & CONFIG
+// ══════════════════════════════════════════════════════
+const STARS = ['','★','★★','★★★','★★★★'];
+const LEVEL_NAMES = ['','Базовый','Практический','Продвинутый','Эксперт'];
+const LAW_COLORS = {'ФЗ-323':'tag-323','ФЗ-152':'tag-152','ФЗ-326':'tag-326','ТК РФ':'tag-tk','Кросс':'tag-cross','ФЗ-77':'tag-77','ФЗ-125':'tag-125','ФЗ-52':'tag-52','Закон о транспл.':'tag-transp','ФЗ-53':'tag-53'};
+const TOPIC_NAMES = {
+  rights:    'Права пациента',
+  consent:   'Информированное согласие',
+  refusal:   'Отказ от лечения',
+  secret:    'Врачебная тайна',
+  pddata:    'Персональные данные',
+  oms:       'ОМС и страховые гарантии',
+  labor:     'Трудовые права медработников',
+  cross:     'Правовые связки',
+  expert:    'Экспертный уровень',
+  emergency: 'Экстренная помощь',
+  education: 'Наставничество (ФЗ-424)',
+  nmits:     'НМИЦ и клинрекомендации (ФЗ-515)',
+  bads:      'БАДы и реклама (ФЗ-150)',
+  registry:  'Федеральный регистр пациентов (ФЗ-304)',
+  duty27:    'Обязанности граждан (ст. 27 ФЗ-323)',
+  attending: 'Лечащий врач (ст. 70 ФЗ-323)',
+  oath:      'Клятва врача (ст. 71 ФЗ-323)',
+  donation:  'Донорство крови (ФЗ-125)',
+  organdonation: 'Органное донорство (ст. 47 ФЗ-323)',
+  infection: 'Принудительная изоляция при инфекциях (ФЗ-52)',
+  military:  'Военно-врачебная экспертиза (ФЗ-53)',
+};
+
+const LAW_META = {
+  'ФЗ-323':{name:'ФЗ-323 «Охрана здоровья»',color:'#3b82f6'},
+  'ФЗ-152':{name:'ФЗ-152 «Персональные данные»',color:'#8b5cf6'},
+  'ФЗ-326':{name:'ФЗ-326 «ОМС»',color:'#22c55e'},
+  'ТК РФ':{name:'Трудовой кодекс РФ',color:'#f97316'},
+  'ФЗ-77':{name:'ФЗ-77 «О предупреждении туберкулёза»',color:'#f87171'},
+  'ФЗ-125':{name:'ФЗ-125 «О донорстве крови»',color:'#fb7185'},
+  'ФЗ-52':{name:'ФЗ-52 «О санэпидблагополучии»',color:'#2dd4bf'},
+  'Закон о транспл.':{name:'Закон РФ «О трансплантации органов»',color:'#c084fc'},
+  'ФЗ-53':{name:'ФЗ-53 «О воинской обязанности»',color:'#94a3b8'}
+};
+
+const ROLE_NAMES = {doctor:'Врач',nurse:'Медицинская сестра',admin:'Администратор / Руководитель',student:'Студент'};
+
+let state = {
+  role: null,
+  difficulty: 1,
+  asked: new Set(),
+  answers: [], // {qid, chosen, correct, level}
+  consecutiveCorrect: 0,
+  consecutiveWrong: 0,
+  weakTopics: new Set(),
+  startTime: null,
+  currentQ: null,
+  answered: false
+};
+
+// ══════════════════════════════════════════════════════
+// ROLE SELECTION
+// ══════════════════════════════════════════════════════
+function selectRole(el) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.role = el.dataset.role;
+  document.getElementById('start-btn').disabled = false;
+}
+
+// ══════════════════════════════════════════════════════
+// ADAPTIVE ENGINE
+// ══════════════════════════════════════════════════════
+function getNextQuestion() {
+  // Filter by role
+  let pool = Q.filter(q =>
+    !state.asked.has(q.id) &&
+    (q.roles.includes('all') || q.roles.includes(state.role))
+  );
+  if (pool.length === 0) return null;
+
+  // Prioritize weak topics at current difficulty
+  let weakPool = pool.filter(q =>
+    q.level === state.difficulty &&
+    state.weakTopics.has(q.topic)
+  );
+  if (weakPool.length > 0) return weakPool[Math.floor(Math.random() * weakPool.length)];
+
+  // Current difficulty
+  let levelPool = pool.filter(q => q.level === state.difficulty);
+  if (levelPool.length > 0) return levelPool[Math.floor(Math.random() * levelPool.length)];
+
+  // Fall back to any available
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function adjustDifficulty(correct) {
+  if (correct) {
+    state.consecutiveCorrect++;
+    state.consecutiveWrong = 0;
+    if (state.consecutiveCorrect >= 2 && state.difficulty < 4) {
+      state.difficulty++;
+      state.consecutiveCorrect = 0;
+    }
+  } else {
+    state.consecutiveWrong++;
+    state.consecutiveCorrect = 0;
+    if (state.consecutiveWrong >= 2 && state.difficulty > 1) {
+      state.difficulty--;
+      state.consecutiveWrong = 0;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// QUIZ START & RENDER
+// ══════════════════════════════════════════════════════
+function startQuiz() {
+  if (!state.role) return;
+  state.startTime = Date.now();
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderQuestion() {
+  const q = getNextQuestion();
+  if (!q || state.answers.length >= 15) { showResults(); return; }
+  state.asked.add(q.id);
+  state.answered = false;
+
+  // Shuffle answer options
+  const idx = [0,1,2,3].slice(0, q.options.length);
+  for (let i = idx.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  const q2 = Object.assign({}, q, { options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) });
+  state.currentQ = q2;
+
+  const total = Math.min(15, Q.filter(x => x.roles.includes('all') || x.roles.includes(state.role)).length);
+  const pct = (state.answers.length / total) * 100;
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('p-text').textContent = `Вопрос ${state.answers.length + 1} из ${total}`;
+  document.getElementById('level-pill').textContent = `${STARS[state.difficulty]} ${LEVEL_NAMES[state.difficulty]}`;
+
+  const letters = ['А','Б','В','Г'];
+  const lawTagsHtml = q2.laws.map(l => `<span class="law-tag ${LAW_COLORS[l] || 'tag-323'}" title="${LAW_META[l]?.name||l}">${LAW_META[l]?.name||l}</span>`).join('');
+  const scenarioHtml = q2.scenario ? `<div class="scenario-box">📍 ${q2.scenario}</div>` : '';
+
+  document.getElementById('q-container').innerHTML = `
+    <div class="law-tags">${lawTagsHtml}${q2.level >= 3 ? '<span class="law-tag tag-cross">ПРАВОВАЯ СВЯЗКА</span>' : ''}</div>
+    <div class="qcard">
+      <div class="qnum">ВОПРОС ${state.answers.length + 1} · УРОВЕНЬ ${q2.level}</div>
+      ${scenarioHtml}
+      <div class="qtext">${q2.text}</div>
+      <div class="options" id="opts">
+        ${q2.options.map((o,i) => `
+          <div class="opt" id="opt-${i}" onclick="selectAnswer(${i})">
+            <div class="opt-letter">${letters[i]}</div>
+            <span>${o}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="explanation" id="expl"></div>
+    </div>
+    <button class="btn-next" id="btn-next" onclick="nextQ()">
+      ${state.answers.length >= 14 ? 'Получить отчёт →' : 'Следующий вопрос →'}
+    </button>
+  `;
+}
+
+function selectAnswer(idx) {
+  if (state.answered) return;
+  state.answered = true;
+  const q = state.currentQ;
+  const isCorrect = idx === q.correct;
+
+  state.answers.push({qid: q.id, chosen: idx, correct: q.correct, isCorrect, level: q.level, laws: q.laws, topic: q.topic});
+  if (!isCorrect) state.weakTopics.add(q.topic);
+  adjustDifficulty(isCorrect);
+
+  document.querySelectorAll('.opt').forEach(o => o.style.pointerEvents = 'none');
+  document.getElementById(`opt-${idx}`).classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) document.getElementById(`opt-${q.correct}`).classList.add('correct');
+
+  renderExplanation(q, isCorrect);
+  document.getElementById('btn-next').style.display = 'inline-block';
+}
+
+function renderExplanation(q, isCorrect) {
+  const el = document.getElementById('expl');
+  el.style.display = 'block';
+  const e = q.expl;
+
+  if (isCorrect) {
+    el.innerHTML = `
+      <div class="expl-correct">
+        <div class="expl-header">✅ ПРАВИЛЬНО!</div>
+        <div class="expl-text">${e.ok}</div>
+        ${e.refs.length ? `<div class="expl-section"><div class="expl-section-title">Нормативная база</div>
+          <div class="law-refs">${e.refs.map(r => `<div class="law-ref"><strong>${r.law}, ст. ${r.art}</strong><br>${r.text}</div>`).join('')}</div>
+        </div>` : ''}
+      </div>
+    `;
+  } else {
+    const risks = e.risks;
+    const hasRisks = risks.fine || risks.complaint || risks.disciplinary || risks.legal;
+    el.innerHTML = `
+      <div class="expl-wrong">
+        <div class="expl-header">❌ НЕВЕРНО — разберём ошибку</div>
+        <div class="expl-section">
+          <div class="expl-section-title">Почему это ошибка</div>
+          <div class="expl-text">${e.wrong}</div>
+        </div>
+        <div class="expl-section">
+          <div class="expl-section-title">Как правильно</div>
+          <div class="expl-text">${e.ok}</div>
+        </div>
+        ${e.refs.length ? `<div class="expl-section">
+          <div class="expl-section-title">📚 Нормативная база</div>
+          <div class="law-refs">${e.refs.map(r => `<div class="law-ref"><strong>${r.law}, ст. ${r.art}</strong><br>${r.text}</div>`).join('')}
+          ${e.sub.length ? e.sub.map(s => `<div class="law-ref" style="color:var(--muted)">${s}</div>`).join('') : ''}
+          </div>
+        </div>` : ''}
+        ${e.practical ? `<div class="expl-section">
+          <div class="expl-section-title">💼 На практике</div>
+          <div class="practical-box">${e.practical}</div>
+        </div>` : ''}
+        ${hasRisks ? `<div class="expl-section">
+          <div class="expl-section-title">🚨 Риски при таком решении</div>
+          <div class="risks-grid">
+            ${risks.fine ? `<div class="risk-item risk-fine"><div class="risk-label">Штраф</div>${risks.fine}</div>` : ''}
+            ${risks.complaint ? `<div class="risk-item risk-complaint"><div class="risk-label">Жалоба</div>${risks.complaint}</div>` : ''}
+            ${risks.disciplinary ? `<div class="risk-item risk-disciplinary"><div class="risk-label">Дисциплинарная</div>${risks.disciplinary}</div>` : ''}
+            ${risks.legal ? `<div class="risk-item risk-legal"><div class="risk-label">Правовые последствия</div>${risks.legal}</div>` : ''}
+          </div>
+        </div>` : ''}
+      </div>
+    `;
+  }
+}
+
+function nextQ() {
+  if (state.answers.length >= 15) { showResults(); return; }
+  renderQuestion();
+}
+
+// ══════════════════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════════════════
+function showResults() {
+  const total = state.answers.length;
+  const correct = state.answers.filter(a => a.isCorrect).length;
+  const pct = Math.round((correct / total) * 100);
+  const elapsed = Math.round((Date.now() - state.startTime) / 60000);
+
+  // Law breakdown
+  const lawScores = {};
+  Object.keys(LAW_META).forEach(l => { lawScores[l] = {correct:0, total:0}; });
+  state.answers.forEach(a => {
+    a.laws.forEach(l => {
+      if (lawScores[l]) { lawScores[l].total++; if (a.isCorrect) lawScores[l].correct++; }
+    });
+  });
+
+  const maxLevel = Math.max(...state.answers.map(a => a.level));
+  let levelName, levelColor, desc;
+  if (pct >= 80) { levelName = 'Продвинутый уровень'; levelColor = '#22c55e'; desc = 'Отличный результат! Вы уверенно ориентируетесь в медицинском законодательстве. Ваши знания — защита для вас, коллег и пациентов.'; }
+  else if (pct >= 55) { levelName = 'Средний уровень'; levelColor = '#f97316'; desc = 'Хорошая база с точечными пробелами. Критические зоны требуют внимания — именно там скрыты главные правовые риски.'; }
+  else { levelName = 'Базовый уровень'; levelColor = '#ef4444'; desc = 'Есть серьёзные пробелы в ключевых нормах. Незнание закона не освобождает от ответственности — рекомендуем целенаправленное обучение.'; }
+
+  document.getElementById('r-score').textContent = correct;
+  document.getElementById('r-den').textContent = `из ${total}`;
+  document.getElementById('r-level').textContent = levelName;
+  document.getElementById('r-level').style.color = levelColor;
+  document.getElementById('r-desc').textContent = desc;
+  document.getElementById('r-meta').textContent = `Роль: ${ROLE_NAMES[state.role]} · Время: ~${elapsed} мин · Достигнут уровень: ${STARS[maxLevel]}`;
+
+  // Law breakdown
+  let breakdownHtml = '';
+  Object.entries(lawScores).forEach(([law, s]) => {
+    if (s.total === 0) return;
+    const p = Math.round((s.correct / s.total) * 100);
+    const meta = LAW_META[law];
+    const status = p >= 80 ? '✅' : p >= 50 ? '⚠️' : '🚨';
+    breakdownHtml += `
+      <div class="law-item">
+        <div class="law-item-top">
+          <div class="law-item-name">${status} ${meta.name}</div>
+          <div class="law-item-score">${s.correct}/${s.total}</div>
+        </div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${p}%;background:${meta.color}"></div></div>
+        <div class="law-item-detail">${p}% правильных ответов</div>
+      </div>`;
+  });
+  document.getElementById('law-breakdown').innerHTML = breakdownHtml;
+
+  // Strengths
+  const strongLaws = Object.entries(lawScores).filter(([,s]) => s.total > 0 && s.correct/s.total >= 0.8);
+  if (strongLaws.length > 0) {
+    document.getElementById('strengths-wrap').style.display = 'block';
+    document.getElementById('strengths-list').innerHTML = strongLaws.map(([l,s]) =>
+      `<div class="strength-item"><span class="strength-icon">✅</span><span><strong>${LAW_META[l].name}</strong> — уверенное знание (${Math.round(s.correct/s.total*100)}%)</span></div>`
+    ).join('');
+  }
+
+  // Weak areas
+  const weakLaws = Object.entries(lawScores).filter(([,s]) => s.total > 0 && s.correct/s.total < 0.6 && s.correct/s.total >= 0.3);
+  if (weakLaws.length > 0) {
+    document.getElementById('gaps-wrap').style.display = 'block';
+    document.getElementById('gaps-list').innerHTML = weakLaws.map(([l,s]) =>
+      `<div class="strength-item"><span class="strength-icon">⚠️</span><span><strong>${LAW_META[l].name}</strong> — частичное понимание, есть пробелы (${Math.round(s.correct/s.total*100)}%)</span></div>`
+    ).join('');
+  }
+
+  // Critical gaps (< 30% or failed level 3-4 questions)
+  const criticalLaws = Object.entries(lawScores).filter(([,s]) => s.total > 0 && s.correct/s.total < 0.3);
+  const criticalHighLevel = state.answers.filter(a => !a.isCorrect && a.level >= 3);
+  if (criticalLaws.length > 0 || criticalHighLevel.length > 0) {
+    document.getElementById('critical-wrap').style.display = 'block';
+    let critHtml = '';
+    criticalLaws.forEach(([l]) => {
+      critHtml += `<div class="critical-item"><strong>🚨 ${LAW_META[l].name}</strong><span>Критически низкий уровень знаний. Незнание этих норм создаёт прямые правовые риски в работе.</span></div>`;
+    });
+    if (criticalHighLevel.length > 0) {
+      critHtml += `<div class="critical-item"><strong>🚨 Ошибки в кейсах уровня 3–4</strong><span>Вы допустили ошибки в ситуациях с пересечением законов — именно там самые высокие штрафы и правовая ответственность.</span></div>`;
+    }
+    document.getElementById('critical-list').innerHTML = critHtml;
+  }
+
+  // Recs
+  const recs = buildRecs(lawScores, pct, maxLevel);
+  document.getElementById('recs-list').innerHTML = recs.map(r => `<div class="rec-item">${r}</div>`).join('');
+
+  // Save aggregate analytics
+  saveAnalytics(state.role, correct, total, maxLevel);
+
+  showScreen('screen-results');
+}
+
+function buildRecs(lawScores, pct, maxLevel) {
+  const recs = [];
+  const role = state.role;
+
+  if (lawScores['ФЗ-323'] && lawScores['ФЗ-323'].total > 0) {
+    const p = lawScores['ФЗ-323'].correct / lawScores['ФЗ-323'].total;
+    if (p < 0.7) recs.push('📌 <strong>ФЗ-323:</strong> проработайте ст. 13 (врачебная тайна), ст. 20–22 (права пациента, согласия). Это основа — ошибки здесь создают прямые риски.');
+  }
+  if (lawScores['ФЗ-152'] && lawScores['ФЗ-152'].total > 0) {
+    const p = lawScores['ФЗ-152'].correct / lawScores['ФЗ-152'].total;
+    if (p < 0.7) recs.push('🔒 <strong>ФЗ-152:</strong> изучите ст. 10 (спецкатегории ПДн) и ст. 18.1 (локализация). Штрафы по ФЗ-152 обновлены 30.05.2025: до 700 000 руб. базово, до 20 млн руб. за утечку спецкатегорий.');
+  }
+  if (lawScores['ФЗ-326'] && lawScores['ФЗ-326'].total > 0) {
+    const p = lawScores['ФЗ-326'].correct / lawScores['ФЗ-326'].total;
+    if (p < 0.7) recs.push('🏥 <strong>ФЗ-326 (ОМС):</strong> ключевые нормы — ст. 11 ФЗ-323 (запрет отказа) + ст. 35 ФЗ-326 (программа ОМС). Особенно важно для администраторов.');
+  }
+  if (lawScores['ТК РФ'] && lawScores['ТК РФ'].total > 0) {
+    const p = lawScores['ТК РФ'].correct / lawScores['ТК РФ'].total;
+    if (p < 0.7) recs.push('⚖️ <strong>ТК РФ:</strong> проработайте ст. 259 (гарантии для матерей) и ст. 81 п. 6 пп. «в» (увольнение за разглашение тайны). Знание своих прав — это защита.');
+  }
+  if (maxLevel >= 3) recs.push(`🎯 Вы дошли до уровня ${STARS[maxLevel]} — это значит, что система увидела потенциал. Следующий шаг: отработка кейсов с пересечением 3+ законов.`);
+  if (pct >= 80) recs.push('🏆 Ваш результат — выше среднего по профессии. Рекомендуем поделиться этим с коллегами — правовая грамотность всей команды снижает риски клиники.');
+
+  recs.push(`💡 <strong>Антошина Елизавета</strong> проводит тренинги специально для ${ROLE_NAMES[role].toLowerCase()}ов — с кейсами, реальными рисками и инструментами защиты именно для вашей должности.`);
+  return recs;
+}
+
+// ══════════════════════════════════════════════════════
+// ACCESS CODES — меняй и добавляй коды здесь
+// ══════════════════════════════════════════════════════
+const ACCESS_CODES = [
+  'EABR2026',    // основной код
+  'МЕДЗНАНИЯ',   // русский вариант
+  'MEDZN26',     // короткий
+  // добавляй сюда новые коды:
+  // 'КЛИНИКА01',
+  // 'КОМАНДА02',
+];
+
+function checkCode() {
+  const val = document.getElementById('gate-input').value.trim().toUpperCase();
+  if (ACCESS_CODES.map(c => c.toUpperCase()).includes(val)) {
+    sessionStorage.setItem('medznania_access', '1');
+    document.getElementById('screen-gate').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  } else {
+    const inp = document.getElementById('gate-input');
+    inp.classList.add('error');
+    inp.value = '';
+    document.getElementById('gate-err').textContent = 'Неверный код. Попробуйте ещё раз.';
+    inp.focus();
+  }
+}
+
+// Проверка при загрузке (если уже авторизован в этой сессии)
+(function(){
+  if (sessionStorage.getItem('medznania_access') === '1') {
+    document.getElementById('screen-gate').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  }
+})();
+
+// ══════════════════════════════════════════════════════
+// FONT SIZE TOGGLE
+// ══════════════════════════════════════════════════════
+function setFont(size) {
+  document.body.classList.remove('fs-lg');
+  if (size === 'lg') document.body.classList.add('fs-lg');
+  localStorage.setItem('medznania_font', size);
+}
+// Restore on load
+(function(){ const f = localStorage.getItem('medznania_font'); if(f) setFont(f); })();
+
+// ══════════════════════════════════════════════════════
+// ANALYTICS (анонимно, без ПДн)
+// ══════════════════════════════════════════════════════
+function saveAnalytics(role, correct, total, maxLevel) {
+  const pct = Math.round(correct/total*100);
+  const date = new Date().toISOString().slice(0,10);
+
+  // 1. LocalStorage (агрегат)
+  try {
+    const data = JSON.parse(localStorage.getItem('medznania_stats') || '{"sessions":[],"totals":{}}');
+    data.sessions.push({ date, role, correct, total, maxLevel, pct });
+    if (!data.totals[role]) data.totals[role] = {count:0, totalScore:0};
+    data.totals[role].count++;
+    data.totals[role].totalScore += pct;
+    localStorage.setItem('medznania_stats', JSON.stringify(data));
+  } catch(e) {}
+
+  // 2. Telegram — уведомление Елизавете после каждого прохождения
+  const TG_TOKEN = '8682403971:AAGYm49AFTum3eTK_0bSG6ca-8GZg-1YnGg';
+  const TG_CHAT  = '370403604';
+  const weakMap = new Map();
+  state.answers.filter(a=>!a.isCorrect).forEach(a=>{
+    if(!a.topic) return;
+    if(!weakMap.has(a.topic)) weakMap.set(a.topic, new Set());
+    (a.laws||[]).forEach(l=>weakMap.get(a.topic).add(l));
+  });
+  const uniqueWeak = weakMap.size === 0 ? '—'
+    : [...weakMap.entries()].map(([t,ls])=>`• ${TOPIC_NAMES[t]||t} [${[...ls].join(', ')}]`).join('\n');
+
+  // Correct laws summary
+  const correctLaws = {};
+  state.answers.filter(a=>a.isCorrect).forEach(a=>{
+    a.laws.forEach(l=>{ correctLaws[l]=(correctLaws[l]||0)+1; });
+  });
+  const correctLawsStr = Object.entries(correctLaws).map(([l,n])=>`${l}: ${n} верно`).join(' · ') || '—';
+
+  const text = `📊 <b>ЕАБР med — новое прохождение</b>\n\n`
+    + `👤 Роль: <b>${ROLE_NAMES[role]}</b>\n`
+    + `✅ Результат: <b>${correct}/${total} (${pct}%)</b>\n`
+    + `⭐ Макс. уровень: <b>${STARS[maxLevel]} ${LEVEL_NAMES[maxLevel]}</b>\n`
+    + `📅 Дата: ${date}\n\n`
+    + `✔️ <b>Знает хорошо:</b> ${correctLawsStr}\n\n`
+    + `❌ <b>Слабые темы:</b>\n${uniqueWeak}`;
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'HTML' })
+  }).catch(()=>{});
+}
+
+// ══════════════════════════════════════════════════════
+// PDF REPORT
+// ══════════════════════════════════════════════════════
+function buildReportHTML(foxSvg='') {
+  const total = state.answers.length;
+  const correct = state.answers.filter(a => a.isCorrect).length;
+  const pct = Math.round((correct / total) * 100);
+  const elapsed = Math.round((Date.now() - state.startTime) / 60000) || 1;
+  const maxLevel = Math.max(...state.answers.map(a => a.level));
+
+  const lawScores = {};
+  Object.keys(LAW_META).forEach(l => { lawScores[l] = {correct:0, total:0}; });
+  state.answers.forEach(a => {
+    a.laws.forEach(l => { if (lawScores[l]) { lawScores[l].total++; if (a.isCorrect) lawScores[l].correct++; }});
+  });
+
+  let levelName;
+  if (pct >= 90) levelName = 'Экспертный уровень';
+  else if (pct >= 75) levelName = 'Продвинутый уровень';
+  else if (pct >= 55) levelName = 'Средний уровень';
+  else levelName = 'Базовый уровень';
+
+  const recs = buildRecs(lawScores, pct, maxLevel);
+  const date = new Date().toLocaleDateString('ru-RU');
+
+  // Weak topics — используем поля прямо из ответа (без Q.find)
+  const weakTopicMap = new Map();
+  state.answers.filter(a=>!a.isCorrect).forEach(a=>{
+    if(!a.topic) return;
+    if(!weakTopicMap.has(a.topic)) weakTopicMap.set(a.topic, new Set());
+    (a.laws||[]).forEach(l=>weakTopicMap.get(a.topic).add(l));
+  });
+  const weakItemsHtml = [...weakTopicMap.entries()].map(([t,ls])=>
+    `<li style="margin-bottom:5px"><b style="color:#1e293b">${TOPIC_NAMES[t]||t}</b> <span style="color:#92400e;font-size:11px">[${[...ls].join(', ')}]</span></li>`
+  ).join('');
+
+  const lawRows = Object.entries(lawScores).filter(([,s])=>s.total>0).map(([law,s])=>{
+    const p = Math.round(s.correct/s.total*100);
+    const col = p>=80?'#16a34a':p>=50?'#d97706':'#dc2626';
+    return `<tr style="border-bottom:1px solid #e2e8f0">
+      <td style="padding:8px 4px;color:#1e293b;font-size:12px">${LAW_META[law].name}</td>
+      <td style="padding:8px 8px"><div style="background:#e2e8f0;border-radius:4px;height:8px;width:120px;display:inline-block;vertical-align:middle"><div style="background:${col};width:${p}%;height:100%;border-radius:4px"></div></div></td>
+      <td style="padding:8px 4px;font-weight:bold;color:${col};text-align:right;font-size:12px">${s.correct}/${s.total} (${p}%)</td>
+    </tr>`;
+  }).join('');
+
+  const recsHtml = recs.map(r=>`<li style="margin-bottom:7px;color:#374151">${r.replace(/<[^>]+>/g,'')}</li>`).join('');
+
+  const reportHtml = `
+    <div style="font-family:Arial,Helvetica,sans-serif;background:#ffffff;color:#1e293b;padding:32px 36px;max-width:800px;margin:0 auto">
+      <div style="background:#1e3a5f;padding:20px 24px;border-radius:10px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:9px;color:#93c5fd;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px">МедЗнания · Правовой тренажёр</div>
+          <div style="font-size:22px;font-weight:bold;color:#fbbf24;letter-spacing:1px">ПРАВОВОЙ ПРОФИЛЬ СПЕЦИАЛИСТА</div>
+          <div style="font-size:10px;color:#93c5fd;margin-top:4px">Антошина Елизавета · Бизнес-тренер медицинских команд · 2026</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;color:#fbbf24;font-size:15px;font-weight:600;letter-spacing:1px">
+          <span>Е.А</span>${foxSvg}<span>Б.Р</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:14px;margin-bottom:18px">
+        <div style="flex:1;border:2px solid #c9a227;border-radius:10px;padding:16px;text-align:center">
+          <div style="font-size:46px;font-weight:bold;color:#c9a227;line-height:1">${correct}/${total}</div>
+          <div style="font-size:12px;color:#64748b;margin-top:6px">${pct}% · Итоговый балл</div>
+        </div>
+        <div style="flex:1;border:2px solid #c9a227;border-radius:10px;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center">
+          <div style="font-size:20px;font-weight:bold;color:#c9a227">${levelName}</div>
+          <div style="font-size:12px;color:#64748b;margin-top:6px">${STARS[maxLevel]} · Достигнутый уровень</div>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;border-radius:8px;padding:10px 16px;font-size:11px;color:#64748b;margin-bottom:22px;border:1px solid #e2e8f0">
+        Роль: <b style="color:#1e293b">${ROLE_NAMES[state.role]}</b> &nbsp;·&nbsp;
+        Дата: <b style="color:#1e293b">${date}</b> &nbsp;·&nbsp;
+        Время: <b style="color:#1e293b">~${elapsed} мин</b>
+      </div>
+
+      <div style="font-size:10px;font-weight:bold;color:#94a3b8;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Результаты по блокам законодательства</div>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:22px">${lawRows}</table>
+
+      <div style="font-size:10px;font-weight:bold;color:#94a3b8;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Персональные рекомендации</div>
+      <ol style="padding-left:20px;font-size:12px;line-height:1.8;margin-bottom:${weakItemsHtml?'22px':'0'}">${recsHtml}</ol>
+
+      ${weakItemsHtml ? `
+      <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:6px;padding:14px 18px">
+        <div style="font-size:10px;font-weight:bold;color:#92400e;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Темы для повторения</div>
+        <ul style="padding-left:18px;font-size:12px;line-height:1.9;margin:0">${weakItemsHtml}</ul>
+      </div>` : ''}
+
+      <div style="text-align:center;margin-top:28px;padding-top:12px;border-top:2px solid #c9a227;font-size:9px;color:#94a3b8;display:flex;align-items:center;justify-content:center;gap:6px">
+        <span>Е.А</span>${foxSvg ? foxSvg.replace('height:38px','height:22px') : ''}<span>Б.Р · med</span>
+        <span style="margin-left:8px">| Антошина Елизавета | Бизнес-тренер медицинских команд | МедЗнания</span>
+      </div>
+    </div>`;
+
+  document.getElementById('print-area').innerHTML = reportHtml;
+  return reportHtml;
+}
+
+function savePDF() {
+  const foxSvg = document.getElementById('fox-master').outerHTML.replace('id="fox-master"','').replace('style="display:none"','style="height:38px;width:auto;display:inline-block;vertical-align:middle"');
+  const reportHtml = buildReportHTML(foxSvg);
+  const date = new Date().toISOString().slice(0,10);
+  const html = `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
+    <title>МедЗнания_${ROLE_NAMES[state.role]}_${date}</title>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{background:#fff}@page{margin:10mm}@media print{body{margin:0}}</style>
+  </head><body>${reportHtml}</body></html>`;
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const win = window.open(url, '_blank');
+  win.addEventListener('load', () => {
+    setTimeout(() => { win.print(); URL.revokeObjectURL(url); }, 400);
+  });
+}
+
+function printPDF() {
+  buildReportHTML();
+  window.print();
+}
+
+// ══════════════════════════════════════════════════════
+// RESTART
+// ══════════════════════════════════════════════════════
+function restartQuiz() {
+  state = {
+    role: state.role,
+    difficulty: 1,
+    asked: new Set(),
+    answers: [],
+    consecutiveCorrect: 0,
+    consecutiveWrong: 0,
+    weakTopics: new Set(),
+    startTime: Date.now(),
+    currentQ: null,
+    answered: false
+  };
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('start-btn').disabled = true;
+  showScreen('screen-landing');
+}
+
+// Вставляем лису во все слоты
+(function injectFox(){
+  const master = document.getElementById('fox-master');
+  if(!master) return;
+  document.querySelectorAll('.fox-slot').forEach(slot => {
+    const h = slot.dataset.h || '42';
+    const svg = master.cloneNode(true);
+    svg.removeAttribute('id');
+    svg.removeAttribute('style');
+    svg.style.cssText = `height:${h}px;width:auto;display:inline-block;vertical-align:middle`;
+    slot.replaceWith(svg);
+  });
+})();
+</script>
+<div id="print-area"></div>
+</body>
+</html>
