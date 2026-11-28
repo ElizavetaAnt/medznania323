@@ -242,7 +242,7 @@ body.fs-lg .land .sub{font-size:18px}
   </div>
   <div class="gate-subtitle">АНТОШИНА ЕЛИЗАВЕТА · ПРАВОВОЙ ТРЕНАЖЁР</div>
   <h2>Введите код доступа</h2>
-  <p>Доступ предоставляется Антошиной Елизаветой.<br>Если у вас нет кода — напишите в <a href="https://t.me/eabrmed" target="_blank" style="color:var(--gold)">Telegram</a>.</p>
+  <p>Доступ предоставляется Антошиной Елизаветой.<br>Если у вас нет кода, <a href="https://t.me/eabrmed" target="_blank" rel="noopener" style="color:var(--gold)">напишите автору</a>.</p>
   <input class="gate-input" id="gate-input" type="password" placeholder="• • • • • •" maxlength="20"
     onkeydown="if(event.key==='Enter')checkCode()"
     oninput="document.getElementById('gate-input').classList.remove('error');document.getElementById('gate-err').textContent=''">
@@ -356,7 +356,7 @@ body.fs-lg .land .sub{font-size:18px}
   </div>
 
   <button class="btn" id="start-btn" onclick="startQuiz()" disabled>НАЧАТЬ ДИАГНОСТИКУ →</button>
-  <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:14px">Регистрация не нужна · Анонимно · Результат скачаешь сразу</p>
+  <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:14px">Без регистрации. Обезличенные результаты передаются автору для улучшения тренажёра. <a href="https://ea-brmed.ru/privacy-policy" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:underline">Политика обработки данных</a></p>
 </div>
 </div>
 
@@ -420,10 +420,9 @@ body.fs-lg .land .sub{font-size:18px}
     <p>Антошина Елизавета проводит индивидуальные и корпоративные тренинги по медицинскому праву. Разбираем именно твои слабые зоны — с кейсами, практикой и инструментами защиты.</p>
     <p style="font-size:12px;color:var(--muted);margin-bottom:20px">Индивидуально · Для команд клиник · Онлайн и офлайн</p>
     <div class="cta-btns">
-      <a class="btn-cta-tg" href="https://t.me/eabrmed" target="_blank">✈ Написать в Telegram</a>
-      <a class="btn-cta-secondary" href="https://wa.me/74957286916" target="_blank">💬 WhatsApp</a>
+      <a class="btn-cta-tg" href="https://t.me/eabrmed" target="_blank">✈ Написать в мессенджер</a>
+      <a class="btn-cta-secondary" href="tel:+74957286916">📞 +7 (495) 728-69-16</a>
       <a class="btn-cta-secondary" href="https://ea-brmed.ru" target="_blank">🌐 Сайт</a>
-      <a class="btn-cta-secondary" href="https://www.instagram.com/elizavetaantb.r" target="_blank" rel="noopener">📸 Кейсы · Фото</a>
     </div>
   </div>
 
@@ -447,11 +446,9 @@ body.fs-lg .land .sub{font-size:18px}
     <span style="font-size:9px;color:var(--muted);letter-spacing:1px">АНТОШИНА ЕЛИЗАВЕТА</span>
   </div>
   <div class="footer-links">
-    <a class="footer-link" href="https://t.me/eabrmed" target="_blank">Telegram</a>
-    <a class="footer-link" href="https://wa.me/74957286916" target="_blank">WhatsApp</a>
+    <a class="footer-link" href="https://t.me/eabrmed" target="_blank">Мессенджер</a>
     <a class="footer-link" href="tel:+74957286916">+7 (495) 728-69-16</a>
     <a class="footer-link" href="https://ea-brmed.ru" target="_blank">ea-brmed.ru</a>
-    <a class="footer-link" href="https://www.instagram.com/elizavetaantb.r" target="_blank" rel="noopener">Кейсы · Фото</a>
   </div>
   <div class="footer-copy">© Антошина Елизавета, ЕАБР · 2026 · Все права защищены</div>
 </footer>
@@ -1138,8 +1135,23 @@ function setFont(size) {
 (function(){ const f = localStorage.getItem('medznania_font'); if(f) setFont(f); })();
 
 // ══════════════════════════════════════════════════════
-// ANALYTICS (анонимно, без ПДн)
+// ANALYTICS (обезличенно: без имени и контактов; роль, балл и слабые темы
+// сохраняются в localStorage и передаются автору через серверную функцию)
 // ══════════════════════════════════════════════════════
+// URL серверной функции уведомлений (Supabase Edge Function quiz-notify).
+// Пока вместо <PROJECT_REF> не подставлен реальный ref проекта, отправка не выполняется.
+const NOTIFY_URL = 'https://<PROJECT_REF>.supabase.co/functions/v1/quiz-notify';
+function sendQuizNotify(payload) {
+  try {
+    if (!NOTIFY_URL || NOTIFY_URL.includes('<PROJECT_REF>') || typeof fetch !== 'function') return;
+    fetch(NOTIFY_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).catch(()=>{});
+  } catch(e) {}
+}
 function saveAnalytics(role, correct, total, maxLevel) {
   const pct = Math.round(correct/total*100);
   const date = new Date().toISOString().slice(0,10);
@@ -1154,22 +1166,12 @@ function saveAnalytics(role, correct, total, maxLevel) {
     localStorage.setItem('medznania_stats', JSON.stringify(data));
   } catch(e) {}
 
-  // 2. Telegram — уведомление о прохождении
-  const TG_TOKEN = '8682403971:AAGYm49AFTum3eTK_0bSG6ca-8GZg-1YnGg';
-  const TG_CHAT  = '370403604';
-  const weakList = state.answers.filter(a=>!a.isCorrect).map(a=>Q.find(q=>q.id===a.id)?.topic).filter(Boolean);
-  const uniqueWeak = [...new Set(weakList)].join(', ') || '—';
-  const text = `📊 <b>ЕАБР med — новое прохождение</b>\n\n`
-    + `👤 Роль: <b>${ROLE_NAMES[role]}</b>\n`
-    + `✅ Результат: <b>${correct}/${total} (${pct}%)</b>\n`
-    + `⭐ Макс. уровень: <b>${STARS[maxLevel]} ${LEVEL_NAMES[maxLevel]}</b>\n`
-    + `❌ Слабые темы: ${uniqueWeak}\n`
-    + `📅 Дата: ${date}`;
-  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'HTML' })
-  }).catch(()=>{});
+  // 2. Уведомление автору через серверную функцию (обезличенно)
+  try {
+    const weakList = state.answers.filter(a=>!a.isCorrect).map(a=>a.topic || Q.find(q=>q.id===a.qid)?.topic).filter(Boolean);
+    const weak = [...new Set(weakList)].slice(0, 60).map(t=>({ topic: String(t).slice(0,160), laws: [] }));
+    sendQuizNotify({ source: 'medznania323', role, correct, total, maxLevel, strong: [], weak });
+  } catch(e) {}
 }
 
 // ══════════════════════════════════════════════════════
